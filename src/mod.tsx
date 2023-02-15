@@ -11,7 +11,29 @@ import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 type BaseStyle = ViewStyle & TextStyle & ImageStyle
 
-type Variants = { [key: string]: { [key: string]: BaseStyle } }
+type Variants = {
+  [key: string]: {
+    [key: string]: BaseStyle
+  }
+}
+
+type BaseStyleWithVariants = BaseStyle & {
+  variants?: Variants
+}
+
+type ComposeProps<Props, Style, Variants> = Props & {
+  style?: Style
+} & {
+  [K in keyof Variants]?: keyof Variants[K]
+}
+
+type InferProps<Component> = Component extends ComponentType<infer Props>
+  ? Props
+  : never
+
+type InferVariants<Style> = Style extends { variants?: infer Variants }
+  ? Variants
+  : never
 
 export function createTheme<Theme>(theme: Theme) {
   const Context = createContext<Theme>(theme)
@@ -52,27 +74,23 @@ export function createTheme<Theme>(theme: Theme) {
 
   function styled<
     Component extends ComponentType<any>,
-    Style extends BaseStyle & { variants?: Variants },
-    Props = Component extends ComponentType<infer Props> ? Props : never,
+    Style extends BaseStyleWithVariants,
   >(component: Component, createStyledTheme: (theme: Theme) => Style) {
     const styledTheme = createStyledTheme(theme)
-    return forwardRef<
-      Component,
-      Props & {
-        style?: BaseStyle
-      } & {
-        [K in keyof Style['variants']]?: keyof Style['variants'][K]
-      }
-    >((props, ref) => {
-      const styledVariants = createStyledVariants(props, styledTheme.variants)
-      const styledInline = props.style
-      const style = { ...styledTheme, ...styledVariants, ...styledInline }
-      return createElement(component, {
-        ...props,
-        ref,
-        style,
-      })
-    })
+    type Props = InferProps<Component>
+    type Variants = InferVariants<Style>
+    return forwardRef<Component, ComposeProps<Props, BaseStyle, Variants>>(
+      (props, ref) => {
+        const styledVariants = createStyledVariants(props, styledTheme.variants)
+        const styledInline = props.style
+        const style = { ...styledTheme, ...styledVariants, ...styledInline }
+        return createElement(component, {
+          ...props,
+          ref,
+          style,
+        })
+      },
+    )
   }
 
   return {

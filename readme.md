@@ -23,6 +23,14 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 })
 ```
 
+src/app.tsx
+
+```tsx
+export function App() {
+  return <ThemeProvider value={theme}>...</ThemeProvider>
+}
+```
+
 src/components/box.tsx
 
 ```tsx

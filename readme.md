@@ -1,11 +1,11 @@
-# Motif (beta)
+# React Native Motif (beta)
 
-This is the initial version of Motif, a React Native Library to style components.
+This is the initial version of React Native Motif, a React Native Library to build UI.
 
 src/motif.tsx
 
 ```tsx
-import { createTheme } from '@/motif'
+import { createTheme } from 'react-native-motif'
 
 export const { ThemeProvider, useTheme, theme, styled } = createTheme({
   colors: {
@@ -35,7 +35,7 @@ src/components/box.tsx
 
 ```tsx
 import { View } from 'react-native'
-import { styled } from '@/styled'
+import { styled } from '../../motif'
 
 export const Box = styled(View, theme => ({
   width: '100%',
@@ -54,7 +54,9 @@ export const Box = styled(View, theme => ({
 
 src/app.tsx
 
-```
+```tsx
+import { Box } from './components/box'
+
 export function App() {
   return (
     <Box padding="md">

@@ -9,15 +9,15 @@ import {
 } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-type BaseStyle = ViewStyle & TextStyle & ImageStyle
+type ComponentStyle = ViewStyle & TextStyle & ImageStyle
 
 type Variants = {
   [key: string]: {
-    [key: string]: BaseStyle
+    [key: string]: ComponentStyle
   }
 }
 
-type BaseStyleWithVariants = BaseStyle & {
+type ComponentStyleWithVariants = ComponentStyle & {
   variants?: Variants
 }
 
@@ -74,23 +74,22 @@ export function createTheme<Theme>(theme: Theme) {
 
   function styled<
     Component extends ComponentType<any>,
-    Style extends BaseStyleWithVariants,
+    Style extends ComponentStyleWithVariants,
   >(component: Component, createStyledTheme: (theme: Theme) => Style) {
-    const styledTheme = createStyledTheme(theme)
     type Props = InferProps<Component>
     type Variants = InferVariants<Style>
-    return forwardRef<Component, ComposeProps<Props, BaseStyle, Variants>>(
-      (props, ref) => {
-        const styledVariants = createStyledVariants(props, styledTheme.variants)
-        const styledInline = props.style
-        const style = { ...styledTheme, ...styledVariants, ...styledInline }
-        return createElement(component, {
-          ...props,
-          ref,
-          style,
-        })
-      },
-    )
+    type ComposedProps = ComposeProps<Props, ComponentStyle, Variants>
+    return forwardRef<Component, ComposedProps>((props, ref) => {
+      const styledTheme = createStyledTheme(theme)
+      const styledVariants = createStyledVariants(props, styledTheme.variants)
+      const styledInline = props.style
+      const style = { ...styledTheme, ...styledVariants, ...styledInline }
+      return createElement(component, {
+        ...props,
+        ref,
+        style,
+      })
+    })
   }
 
   return {

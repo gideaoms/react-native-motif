@@ -24,14 +24,6 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 ```
 
 ```tsx
-// src/app.tsx
-
-export function App() {
-  return <ThemeProvider value={theme}>...</ThemeProvider>
-}
-```
-
-```tsx
 // src/components/box.tsx
 
 import { View } from 'react-native'
@@ -55,13 +47,16 @@ export const Box = styled(View, theme => ({
 ```tsx
 // src/app.tsx
 
+import { ThemeProvider, theme } from './motif'
 import { Box } from './components/box'
 
 export function App() {
   return (
-    <Box padding="md">
-      <Text>Hello world</Text>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box padding="md">
+        <Text>Hello world</Text>
+      </Box>
+    </ThemeProvider>
   )
 }
 ```

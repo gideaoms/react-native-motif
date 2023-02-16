@@ -40,6 +40,14 @@ export const Box = styled(View, theme => ({
         padding: theme.spaces.sm,
       },
     },
+    background: {
+      primary: {
+        backgroundColor: theme.colors.primary,
+      },
+      secondary: {
+        backgroundColor: theme.colors.secondary,
+      },
+    },
   },
 }))
 ```
@@ -53,7 +61,10 @@ import { Box } from './components/box'
 export function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Box padding="md">
+      <Box
+        padding="md"
+        background="secondary"
+      >
         <Text>Hello world</Text>
       </Box>
     </ThemeProvider>

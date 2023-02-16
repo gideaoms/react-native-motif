@@ -1,6 +1,6 @@
 # React Native Motif (beta)
 
-This is the initial version of React Native Motif, a React Native Library to build UI.
+This is the initial version of React Native Motif, a React Native Library to build UI components.
 
 ```tsx
 // src/motif.tsx

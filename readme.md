@@ -2,9 +2,9 @@
 
 This is the initial version of React Native Motif, a React Native Library to build UI.
 
-src/motif.tsx
-
 ```tsx
+// src/motif.tsx
+
 import { createTheme } from 'react-native-motif'
 
 export const { ThemeProvider, useTheme, theme, styled } = createTheme({
@@ -23,17 +23,17 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 })
 ```
 
-src/app.tsx
-
 ```tsx
+// src/app.tsx
+
 export function App() {
   return <ThemeProvider value={theme}>...</ThemeProvider>
 }
 ```
 
-src/components/box.tsx
-
 ```tsx
+// src/components/box.tsx
+
 import { View } from 'react-native'
 import { styled } from '../../motif'
 
@@ -52,9 +52,9 @@ export const Box = styled(View, theme => ({
 }))
 ```
 
-src/app.tsx
-
 ```tsx
+// src/app.tsx
+
 import { Box } from './components/box'
 
 export function App() {

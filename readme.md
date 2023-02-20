@@ -1,6 +1,6 @@
 # React Native Motif
 
-This is the initial version of React Native Motif, a React Native Library to build UI components.
+React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet)
 
 ```tsx
 // src/motif.tsx

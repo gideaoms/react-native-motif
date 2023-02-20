@@ -1,6 +1,6 @@
 {
   "name": "react-native-motif",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "React Native Library to build UI",
   "main": "dist/mod.js",
   "module": "dist/mod.mjs",
@@ -8,6 +8,9 @@
   "scripts": {
     "build": "tsup src/mod.tsx --format esm,cjs --dts --external react,react-native"
   },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "React Native",
     "UI",

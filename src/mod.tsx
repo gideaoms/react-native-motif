@@ -9,19 +9,19 @@ import {
 } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-type ComponentStyle = ViewStyle & TextStyle & ImageStyle
+type Style = ViewStyle & TextStyle & ImageStyle
 
 type Variants = {
   [key: string]: {
-    [key: string]: ComponentStyle
+    [key: string]: Style
   }
 }
 
-type ComponentStyleWithVariants = ComponentStyle & {
+type StyleWithVariants = Style & {
   variants?: Variants
 }
 
-type ComposeProps<Props, Style, Variants> = Props & {
+type AddVariantsToComponent<Props, Style, Variants> = Props & {
   style?: Style
 } & {
   [K in keyof Variants]?: keyof Variants[K]
@@ -74,22 +74,28 @@ export function createTheme<Theme>(theme: Theme) {
 
   function styled<
     Component extends ComponentType<any>,
-    Style extends ComponentStyleWithVariants,
+    Style extends StyleWithVariants,
   >(component: Component, createStyledTheme: (theme: Theme) => Style) {
-    type Props = InferProps<Component>
-    type Variants = InferVariants<Style>
-    type ComposedProps = ComposeProps<Props, ComponentStyle, Variants>
-    return forwardRef<Component, ComposedProps>((props, ref) => {
-      const styledTheme = createStyledTheme(theme)
-      const styledVariants = createStyledVariants(props, styledTheme.variants)
-      const styledInline = props.style
-      const style = { ...styledTheme, ...styledVariants, ...styledInline }
-      return createElement(component, {
-        ...props,
-        ref,
-        style,
-      })
-    })
+    type PropsWithVariants = AddVariantsToComponent<
+      InferProps<Component>,
+      StyleWithVariants,
+      InferVariants<Style>
+    >
+    const createdComponent = forwardRef<Component, PropsWithVariants>(
+      (props, ref) => {
+        const styledTheme = createStyledTheme(theme)
+        const styledVariants = createStyledVariants(props, styledTheme.variants)
+        const styledInline = props.style
+        const style = { ...styledTheme, ...styledVariants, ...styledInline }
+        return createElement(component, {
+          ...props,
+          ref,
+          style,
+        })
+      },
+    )
+    createdComponent.displayName = component.displayName
+    return createdComponent
   }
 
   return {

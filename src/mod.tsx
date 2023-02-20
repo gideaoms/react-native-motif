@@ -33,7 +33,7 @@ type InferProps<Component> = Component extends ComponentType<infer Props>
 
 type InferVariants<Style> = Style extends { variants?: infer Variants }
   ? Variants
-  : never
+  : {}
 
 export function createTheme<Theme>(theme: Theme) {
   const Context = createContext<Theme>(theme)

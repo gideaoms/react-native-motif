@@ -1,4 +1,4 @@
-# React Native Motif (beta)
+# React Native Motif
 
 This is the initial version of React Native Motif, a React Native Library to build UI components.
 

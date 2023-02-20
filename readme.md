@@ -1,6 +1,8 @@
 # React Native Motif
 
-React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet)
+React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet).
+UI components are migrating to new way: UI declarative. eg: Stitches, ChakraUI, Flutter, Swift UI.
+That is the best way I think we can create UI using React Native, there is no reason to separate style and logic.
 
 ```tsx
 // src/motif.tsx
@@ -53,19 +55,58 @@ export const Box = styled(View, theme => ({
 ```
 
 ```tsx
+// src/components/text.tsx
+
+import { Text as BaseText } from 'react-native'
+import { styled } from '../../motif'
+
+export const Text = styled(BaseText, theme => ({
+  variants: {
+    color: {
+      primary: {
+        color: theme.colors.primary,
+      },
+      secondary: {
+        color: theme.colors.secondary,
+      },
+    },
+    fontSize: {
+      md: {
+        fontSize: theme.fontSizes.md,
+      },
+      sm: {
+        fontSize: theme.fontSizes.sm,
+      },
+    },
+  },
+}))
+```
+
+```tsx
 // src/app.tsx
 
 import { ThemeProvider, theme } from './motif'
 import { Box } from './components/box'
+import { Text } from './components/text'
 
 export function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        padding="md"
         background="secondary"
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 5,
+        }}
       >
-        <Text>Hello world</Text>
+        <Text
+          color="primary"
+          fontSize="md"
+        >
+          Hello world
+        </Text>
       </Box>
     </ThemeProvider>
   )

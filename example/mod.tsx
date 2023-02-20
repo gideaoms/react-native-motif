@@ -1,13 +1,14 @@
-import { Text, View } from 'react-native'
+import { Text as BaseText, View } from 'react-native'
 import { createTheme } from '../src/mod'
 
-const { styled } = createTheme({
+const { styled, ThemeProvider, theme } = createTheme({
   colors: {
     primary: 'red',
     secondary: 'blue',
   },
-  sizes: {
+  fontSizes: {
     md: 15,
+    sm: 10,
   },
 })
 
@@ -25,8 +26,7 @@ const Box = styled(View, theme => ({
   },
 }))
 
-const Title = styled(Text, theme => ({
-  fontSize: theme.sizes.md,
+const Text = styled(BaseText, theme => ({
   variants: {
     color: {
       primary: {
@@ -36,18 +36,36 @@ const Title = styled(Text, theme => ({
         color: theme.colors.secondary,
       },
     },
+    fontSize: {
+      md: {
+        fontSize: theme.fontSizes.md,
+      },
+      sm: {
+        fontSize: theme.fontSizes.sm,
+      },
+    },
   },
 }))
 
 export function App() {
   return (
-    <Box
-      background="secondary"
-      style={{
-        marginTop: 10,
-      }}
-    >
-      <Title color="primary">Hello world</Title>
-    </Box>
+    <ThemeProvider theme={theme}>
+      <Box
+        background="secondary"
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 5,
+        }}
+      >
+        <Text
+          color="primary"
+          fontSize="md"
+        >
+          Hello world
+        </Text>
+      </Box>
+    </ThemeProvider>
   )
 }

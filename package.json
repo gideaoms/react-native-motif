@@ -6,7 +6,7 @@
   "module": "dist/mod.mjs",
   "types": "dist/mod.d.ts",
   "scripts": {
-    "build": "tsup src/mod.tsx --format esm,cjs --dts --external react,react-native"
+    "build": "rimraf dist && tsup src/mod.tsx --format esm,cjs --dts --external react,react-native"
   },
   "files": [
     "dist"
@@ -31,6 +31,7 @@
     "prettier": "^2.8.2",
     "react": "^18.2.0",
     "react-native": "^0.71.0",
+    "rimraf": "^4.1.2",
     "styled-components": "^5.3.6",
     "ts-toolbelt": "^9.6.0",
     "tsup": "^6.6.3",

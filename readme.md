@@ -112,3 +112,8 @@ export function App() {
   )
 }
 ```
+
+# Plans for the future
+
+1. add default variants
+2. style container

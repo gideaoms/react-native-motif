@@ -27,11 +27,11 @@ type AddVariantsToComponent<Props, Style, Variants> = Props & {
   [K in keyof Variants]?: keyof Variants[K]
 }
 
-type InferProps<Component> = Component extends ComponentType<infer Props>
+type GetProps<Component> = Component extends ComponentType<infer Props>
   ? Props
   : never
 
-type InferVariants<Style> = Style extends { variants?: infer Variants }
+type GetVariants<Style> = Style extends { variants?: infer Variants }
   ? Variants
   : {}
 
@@ -77,9 +77,9 @@ export function createTheme<Theme>(theme: Theme) {
     Style extends StyleWithVariants,
   >(component: Component, createStyledTheme: (theme: Theme) => Style) {
     type PropsWithVariants = AddVariantsToComponent<
-      InferProps<Component>,
+      GetProps<Component>,
       StyleWithVariants,
-      InferVariants<Style>
+      GetVariants<Style>
     >
     const createdComponent = forwardRef<Component, PropsWithVariants>(
       (props, ref) => {

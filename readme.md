@@ -113,7 +113,7 @@ export function App() {
 }
 ```
 
-# Plans for the future
+## Plans for the future
 
-1. add default variants
-2. style container
+1. add `defaultVariants`
+2. add `styleContainer`

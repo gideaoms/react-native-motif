@@ -79,17 +79,3 @@ export function createTheme<Theme>(theme: Theme) {
     ThemeProvider,
   }
 }
-
-type V = {
-  a: string
-  b: string
-}
-
-type D = {
-  [K in keyof V]: string
-}
-
-const a: D = {
-  a: '',
-  b: '',
-}

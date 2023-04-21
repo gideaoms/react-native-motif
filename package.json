@@ -1,6 +1,6 @@
 {
   "name": "react-native-motif",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "React Native Library to build UI",
   "main": "dist/mod.js",
   "module": "dist/mod.mjs",
@@ -23,7 +23,7 @@
     "type": "git",
     "url": "git+https://github.com/gideaoms/react-native-motif.git"
   },
-  "author": "Gideão Silva <gideaoms@gmail.com>",
+  "author": "Gideão Silva",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^18.0.26",

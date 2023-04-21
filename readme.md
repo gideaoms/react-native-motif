@@ -1,7 +1,7 @@
 # React Native Motif
 
 React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet).
-UI components are migrating to new way: UI declarative. eg: Stitches, ChakraUI, Flutter, Swift UI.
+UI components are migrating to new way: declarative UI. eg: Stitches, ChakraUI, Flutter, Swift UI.
 That is the best way I think we can create UI using React Native, there is no reason to separate style and logic.
 
 ```tsx
@@ -28,10 +28,10 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 ```tsx
 // src/components/box.tsx
 
-import { View } from 'react-native'
+import * as Native from 'react-native'
 import { styled } from '../../motif'
 
-export const Box = styled(View, theme => ({
+export const Box = styled(Native.View, theme => ({
   width: '100%',
   variants: {
     padding: {
@@ -57,10 +57,10 @@ export const Box = styled(View, theme => ({
 ```tsx
 // src/components/text.tsx
 
-import { Text as BaseText } from 'react-native'
+import * as Native from 'react-native'
 import { styled } from '../../motif'
 
-export const Text = styled(BaseText, theme => ({
+export const Text = styled(Native.Text, theme => ({
   variants: {
     color: {
       primary: {
@@ -104,6 +104,9 @@ export function App() {
         <Text
           color="primary"
           fontSize="md"
+          style={{
+            margin: 20,
+          }}
         >
           Hello world
         </Text>
@@ -112,8 +115,3 @@ export function App() {
   )
 }
 ```
-
-## Plans for the future
-
-1. add `defaultVariants`
-2. add `styleContainer`

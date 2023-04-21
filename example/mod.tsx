@@ -1,4 +1,4 @@
-import { Text as RNText, View } from 'react-native'
+import * as Native from 'react-native'
 import { createTheme } from '../src/mod'
 
 const { styled, ThemeProvider, theme } = createTheme({
@@ -12,7 +12,7 @@ const { styled, ThemeProvider, theme } = createTheme({
   },
 })
 
-const Box = styled(View, theme => ({
+const Box = styled(Native.View, theme => ({
   backgroundColor: theme.colors.primary,
   variants: {
     background: {
@@ -26,7 +26,7 @@ const Box = styled(View, theme => ({
   },
 }))
 
-const Text = styled(RNText, theme => ({
+const Text = styled(Native.Text, theme => ({
   variants: {
     color: {
       primary: {

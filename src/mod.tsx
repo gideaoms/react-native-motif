@@ -1,22 +1,12 @@
+import { ReactNode, createContext, useContext } from 'react'
 import {
-  ComponentProps,
-  ComponentType,
-  createContext,
-  createElement,
-  forwardRef,
-  ReactNode,
-  useContext,
-} from 'react'
-import {
-  RawStyle,
-  Variants,
-  ComposeProps,
-  GetProps,
-  GetVariants,
+  ComponentStyleProps,
+  ExtractPropsFromStyledComponent,
+  VariantsProps,
 } from './types'
 
 export function createTheme<Theme>(theme: Theme) {
-  const Context = createContext<Theme>(theme)
+  const Context = createContext(theme)
 
   function useTheme() {
     return useContext(Context)
@@ -28,19 +18,19 @@ export function createTheme<Theme>(theme: Theme) {
     )
   }
 
-  function createStyledVariants(
-    props: ComponentProps<any>,
-    variants?: Variants,
+  function transformVariantsInStyle(
+    chosenVariants: Record<string, string | undefined>,
+    variants?: VariantsProps,
   ) {
     if (!variants || typeof variants !== 'object') {
       return {}
     }
-    return Object.keys(props).reduce((prev, key) => {
+    return Object.keys(chosenVariants).reduce(function (prev, key) {
       const pairs = variants[key]
       if (!pairs) {
         return prev
       }
-      const variant = props[key]
+      const variant = chosenVariants[key]
       if (!variant) {
         return prev
       }
@@ -52,30 +42,25 @@ export function createTheme<Theme>(theme: Theme) {
     }, {})
   }
 
-  function styled<
-    Component extends ComponentType<any>,
-    Style extends RawStyle & Variants,
-  >(component: Component, createStyledTheme: (theme: Theme) => Style) {
-    type Props = ComposeProps<GetProps<Component>, GetVariants<Style>>
-    const createdComponent = forwardRef<Component, Props>((props, ref) => {
-      const styledTheme = createStyledTheme(theme)
-      const styledVariants = createStyledVariants(props, styledTheme.variants)
-      const styledInline = props.style
-      const style = { ...styledTheme, ...styledVariants, ...styledInline }
-      return createElement(component, {
-        ...props,
-        ref,
-        style,
-      })
-    })
-    createdComponent.displayName = component.displayName
-    return createdComponent
+  function styled<StyledComponent extends ComponentStyleProps>(
+    styleComponent: (theme: Theme) => StyledComponent,
+  ) {
+    const { base, variants } = styleComponent(theme)
+    return function (props?: ExtractPropsFromStyledComponent<StyledComponent>) {
+      if (!props) {
+        return base
+      }
+      const { style: inline, ...chosenVariants } = props
+      const transformed = transformVariantsInStyle(chosenVariants, variants)
+      return { ...base, ...transformed, ...inline }
+    }
   }
 
   return {
-    styled,
-    theme,
     useTheme,
     ThemeProvider,
+    styled,
   }
 }
+
+// https://github.com/planttheidea/micro-memoize

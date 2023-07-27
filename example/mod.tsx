@@ -1,32 +1,17 @@
-import * as Native from 'react-native'
-import { createTheme } from '../src/mod'
+import { Text } from 'react-native'
+import { createTheme } from '../src/v2'
 
-const { styled, ThemeProvider, theme } = createTheme({
+const { styled } = createTheme({
   colors: {
     primary: 'red',
     secondary: 'blue',
   },
-  fontSizes: {
-    md: 15,
-    sm: 10,
-  },
 })
 
-const Box = styled(Native.View, theme => ({
-  backgroundColor: theme.colors.primary,
-  variants: {
-    background: {
-      primary: {
-        backgroundColor: theme.colors.primary,
-      },
-      secondary: {
-        backgroundColor: theme.colors.secondary,
-      },
-    },
+const text = styled(theme => ({
+  base: {
+    alignContent: 'center',
   },
-}))
-
-const Text = styled(Native.Text, theme => ({
   variants: {
     color: {
       primary: {
@@ -36,36 +21,20 @@ const Text = styled(Native.Text, theme => ({
         color: theme.colors.secondary,
       },
     },
-    fontSize: {
-      md: {
-        fontSize: theme.fontSizes.md,
-      },
-      sm: {
-        fontSize: theme.fontSizes.sm,
-      },
-    },
   },
 }))
 
 export function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        background="secondary"
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 5,
-        }}
-      >
-        <Text
-          color="primary"
-          fontSize="md"
-        >
-          Hello world
-        </Text>
-      </Box>
-    </ThemeProvider>
+    <Text
+      style={text({
+        color: 'primary',
+        style: {
+          marginBottom: 10,
+        },
+      })}
+    >
+      Hello world
+    </Text>
   )
 }

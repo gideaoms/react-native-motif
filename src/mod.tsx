@@ -1,9 +1,5 @@
 import { ReactNode, createContext, useContext } from 'react'
-import {
-  ComponentStyleProps,
-  ExtractPropsFromStyledComponent,
-  VariantsProps,
-} from './types'
+import { ComponentStyleProps, ExtractPropsFromStyledComponent } from './types'
 
 export function createTheme<Theme>(theme: Theme) {
   const Context = createContext(theme)
@@ -18,41 +14,24 @@ export function createTheme<Theme>(theme: Theme) {
     )
   }
 
-  function transformVariantsInStyle(
-    chosenVariants: Record<string, string | undefined>,
-    variants?: VariantsProps,
-  ) {
-    if (!variants || typeof variants !== 'object') {
-      return {}
-    }
-    return Object.keys(chosenVariants).reduce(function (prev, key) {
-      const pairs = variants[key]
-      if (!pairs) {
-        return prev
-      }
-      const variant = chosenVariants[key]
-      if (!variant) {
-        return prev
-      }
-      const pair = pairs[variant]
-      if (!pair) {
-        return prev
-      }
-      return { ...prev, ...pair }
-    }, {})
-  }
-
   function styled<StyledComponent extends ComponentStyleProps>(
     styleComponent: (theme: Theme) => StyledComponent,
   ) {
     const { base, variants } = styleComponent(theme)
     return function (props?: ExtractPropsFromStyledComponent<StyledComponent>) {
-      if (!props) {
+      if (!props || !variants) {
         return base
       }
-      const { style: inline, ...chosenVariants } = props
-      const transformed = transformVariantsInStyle(chosenVariants, variants)
-      return { ...base, ...transformed, ...inline }
+      const { style, ...chosenVariants } = props
+      const transformed = Object.keys(chosenVariants).reduce(function (
+        acc,
+        variant,
+      ) {
+        const style = variants[variant][chosenVariants[variant] as string]
+        return { ...acc, ...style }
+      },
+      {})
+      return { ...base, ...transformed, ...style }
     }
   }
 
@@ -62,5 +41,3 @@ export function createTheme<Theme>(theme: Theme) {
     styled,
   }
 }
-
-// https://github.com/planttheidea/micro-memoize

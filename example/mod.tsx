@@ -1,5 +1,5 @@
 import { Text } from 'react-native'
-import { createTheme } from '../src/v2'
+import { createTheme } from '../src/mod'
 
 const { styled } = createTheme({
   colors: {

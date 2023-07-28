@@ -1,8 +1,6 @@
 # React Native Motif
 
 React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet).
-UI components are migrating to new way: declarative UI. eg: Stitches, ChakraUI, Flutter, Swift UI.
-That is the best way I think we can create UI using React Native, there is no reason to separate style and logic.
 
 ```tsx
 // src/motif.tsx
@@ -26,13 +24,15 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 ```
 
 ```tsx
-// src/components/box.tsx
+// src/app.tsx
 
-import * as Native from 'react-native'
-import { styled } from '../../motif'
+import { View, Text } from 'react-native'
+import { styled, ThemeProvider, theme } from '@/motif'
 
-export const Box = styled(Native.View, theme => ({
-  width: '100%',
+const box = styled(theme => ({
+  base: {
+    width: '100%',
+  },
   variants: {
     padding: {
       md: {
@@ -52,15 +52,8 @@ export const Box = styled(Native.View, theme => ({
     },
   },
 }))
-```
 
-```tsx
-// src/components/text.tsx
-
-import * as Native from 'react-native'
-import { styled } from '../../motif'
-
-export const Text = styled(Native.Text, theme => ({
+const text = styled(theme => ({
   variants: {
     color: {
       primary: {
@@ -80,33 +73,29 @@ export const Text = styled(Native.Text, theme => ({
     },
   },
 }))
-```
-
-```tsx
-// src/app.tsx
-
-import { ThemeProvider, theme } from './motif'
-import { Box } from './components/box'
-import { Text } from './components/text'
 
 export function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        background="secondary"
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 5,
-        }}
+        style={box({
+          background: 'secondary',
+          style: {
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 5,
+          },
+        })}
       >
         <Text
-          color="primary"
-          fontSize="md"
-          style={{
-            margin: 20,
-          }}
+          style={text({
+            color: 'primary',
+            fontSize: 'md',
+            style: {
+              margin: 20,
+            },
+          })}
         >
           Hello world
         </Text>
@@ -115,3 +104,8 @@ export function App() {
   )
 }
 ```
+
+### Soon:
+
+- `defaultVariants`
+- `VariantProps<typeof component>`

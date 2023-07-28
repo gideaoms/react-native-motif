@@ -1,23 +1,30 @@
 import { ComponentType } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-export type RawStyle = ViewStyle & TextStyle & ImageStyle
+export type ComponentStyle = ImageStyle & TextStyle & ViewStyle
 
-export type Variants = {
-  variants?: {
-    [K in string]: {
-      [K: string]: RawStyle
-    }
+export type VariantsProps = {
+  [Key in string]: {
+    [Key in string]: ComponentStyle
   }
 }
 
-export type ComposeProps<Props, Variants> =
-  | Props & {
-      [K in keyof Variants]?: keyof Variants[K]
-    } & {
-      style?: RawStyle
-    }
+export type ComponentStyleProps = {
+  base?: ComponentStyle
+  variants?: VariantsProps
+}
 
-export type GetProps<C> = C extends ComponentType<infer P> ? P : never
+export type ExtractPropsFromVariants<Variants> = {
+  [Key in keyof Variants]?: keyof Variants[Key]
+}
 
-export type GetVariants<S> = S extends { variants?: infer V } ? V : {}
+export type ExtractPropsFromStyledComponent<StyledComponent> =
+  StyledComponent extends {
+    variants?: infer Variants
+  }
+    ? ExtractPropsFromVariants<Variants> & {
+        style?: ComponentStyle
+      }
+    : {
+        style?: ComponentStyle
+      }

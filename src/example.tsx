@@ -1,5 +1,5 @@
 import { Text } from 'react-native'
-import { createTheme, ExtractProps } from './mod'
+import { createTheme, VariantProps } from './mod'
 
 const { styled, theme } = createTheme({
   colors: {
@@ -39,17 +39,17 @@ const title = styled({
   },
 })
 
-type TitleProps = ExtractProps<typeof title> & {
-  children: string | string[]
+type TitleProps = VariantProps<typeof title> & {
+  children: string
 }
 
 export function Title(props: TitleProps) {
   return (
     <Text
       style={[
-        title.base,
-        title.color[props.color],
-        title.fontSize[props.fontSize],
+        title.style,
+        title.color[props.color!],
+        title.fontSize[props.fontSize!],
       ]}
     >
       {props.children}

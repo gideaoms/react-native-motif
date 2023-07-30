@@ -24,31 +24,31 @@ export function createTheme<T>(theme: T) {
     )
   }
 
-  function addDefaultVariants(
-    variants: Record<string, Record<string, object>> = {},
-    defaultVariants: Record<string, PropertyKey | undefined> = {}
+  function mergeDefaultVariants(
+    variants: Record<string, Record<string, object>>,
+    defaultVariants: Record<string, PropertyKey | undefined>,
   ) {
     return Object.keys(defaultVariants)
       .map(function (key) {
-        const variant = variants[key];
-        const defaultVariant = defaultVariants[key] as string;
-        return variant[defaultVariant];
+        const variant = variants[key]
+        const defaultVariant = defaultVariants[key] as string
+        return variant[defaultVariant]
       })
       .reduce(function (acc, curr) {
-        return { ...acc, ...curr };
-      }, {});
+        return { ...acc, ...curr }
+      }, {})
   }
 
   function styled<
     const Variants extends Record<string, Record<string, CombinedStyle>>,
     const DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
   >(config: Config<Variants, DefaultVariants>) {
-    const defaultVariants = addDefaultVariants(
-      config.variants,
-      config.defaultVariants
-    );
-    const style = { ...config.base!, ...defaultVariants };
-    return { style, ...config.variants! };
+    const defaultVariants = mergeDefaultVariants(
+      config.variants ?? {},
+      config.defaultVariants ?? {},
+    )
+    const style = { ...config.base!, ...defaultVariants }
+    return { style, ...config.variants! }
   }
 
   return {

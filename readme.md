@@ -22,7 +22,7 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 ```tsx
 // src/title.tsx
 
-import { ExtractProps } from 'react-native-motif'
+import { VariantProps } from 'react-native-motif'
 import { Text } from 'react-native'
 import { styled, theme } from './motif'
 
@@ -53,8 +53,8 @@ const title = styled({
   },
 })
 
-export type TitleProps = ExtractProps<typeof title> & {
-  children: string | string[]
+export type TitleProps = VariantProps<typeof title> & {
+  children: string
 }
 
 export function Title(props: TitleProps) {
@@ -62,8 +62,8 @@ export function Title(props: TitleProps) {
     <Text
       style={[
         title.base,
-        title.color[props.color],
-        title.fontSize[props.fontSize],
+        title.color[props.color!],
+        title.fontSize[props.fontSize!],
       ]}
     >
       {props.children}

@@ -6,7 +6,8 @@
   "module": "dist/mod.mjs",
   "types": "dist/mod.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsup src/mod.tsx --format esm,cjs --dts --external react,react-native"
+    "build": "rimraf dist && tsup src/mod.tsx --format esm,cjs --dts --external react,react-native",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"

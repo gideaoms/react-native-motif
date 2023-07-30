@@ -9,7 +9,7 @@ type Config<Variants, DefaultVariants> = {
   defaultVariants?: DefaultVariants
 }
 
-export type VariantProps<T> = Omit<{ [K in keyof T]?: keyof T[K] }, 'base'>
+export type VariantProps<T> = Omit<{ [K in keyof T]?: keyof T[K] }, 'style'>
 
 export function createTheme<T>(theme: T) {
   const Context = createContext(theme)

@@ -39,9 +39,7 @@ const title = styled({
   },
 })
 
-type TitleProps = VariantProps<typeof title> & {
-  children: string
-}
+type TitleProps = VariantProps<typeof title> & { children: string }
 
 export function Title(props: TitleProps) {
   return (

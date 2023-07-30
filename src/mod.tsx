@@ -1,43 +1,40 @@
 import { ReactNode, createContext, useContext } from 'react'
-import { ComponentStyleProps, ExtractPropsFromStyledComponent } from './types'
+import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-export function createTheme<Theme>(theme: Theme) {
+type CombinedStyle = ImageStyle | TextStyle | ViewStyle
+
+type Config<Variants, DefaultVariants> = {
+  base?: CombinedStyle
+  variants?: Variants
+  defaultVariants?: DefaultVariants
+}
+
+export type ExtractProps<T> = Omit<{ [K in keyof T]: keyof T[K] }, 'base'>
+
+export function createTheme<T>(theme: T) {
   const Context = createContext(theme)
 
   function useTheme() {
     return useContext(Context)
   }
 
-  function ThemeProvider(props: { children: ReactNode; theme: Theme }) {
+  function ThemeProvider(props: { children: ReactNode; theme: T }) {
     return (
       <Context.Provider value={props.theme}>{props.children}</Context.Provider>
     )
   }
 
-  function styled<StyledComponent extends ComponentStyleProps>(
-    styleComponent: (theme: Theme) => StyledComponent,
-  ) {
-    const { base, variants } = styleComponent(theme)
-    return function (props?: ExtractPropsFromStyledComponent<StyledComponent>) {
-      if (!props || !variants) {
-        return base
-      }
-      const { style, ...chosenVariants } = props
-      const transformed = Object.keys(chosenVariants).reduce(function (
-        acc,
-        variant,
-      ) {
-        const style = variants[variant][chosenVariants[variant] as string]
-        return { ...acc, ...style }
-      },
-      {})
-      return { ...base, ...transformed, ...style }
-    }
+  function styled<
+    Variants extends Record<string, Record<string, CombinedStyle>>,
+    DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
+  >(config: Config<Variants, DefaultVariants>) {
+    return { base: config.base, ...config.variants! }
   }
 
   return {
     useTheme,
     ThemeProvider,
     styled,
+    theme,
   }
 }

@@ -1,6 +1,6 @@
 # React Native Motif
 
-React Native Motif is a React Native Library to build UI components. It is inspired by [Stitches](https://stitches.dev/), but created from scratch using [StyleSheet](https://reactnative.dev/docs/stylesheet).
+Have fun creating UI for React Native.
 
 ```tsx
 // src/motif.tsx
@@ -16,44 +16,20 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
     sm: 15,
     md: 18,
   },
-  spaces: {
-    sm: 5,
-    md: 10,
-  },
 })
 ```
 
 ```tsx
-// src/app.tsx
+// src/title.tsx
 
-import { View, Text } from 'react-native'
-import { styled, ThemeProvider, theme } from '@/motif'
+import { ExtractProps } from 'react-native-motif'
+import { Text } from 'react-native'
+import { styled, theme } from './motif'
 
-const box = styled(theme => ({
+const title = styled({
   base: {
-    width: '100%',
+    textAlign: 'center',
   },
-  variants: {
-    padding: {
-      md: {
-        padding: theme.spaces.md,
-      },
-      sm: {
-        padding: theme.spaces.sm,
-      },
-    },
-    background: {
-      primary: {
-        backgroundColor: theme.colors.primary,
-      },
-      secondary: {
-        backgroundColor: theme.colors.secondary,
-      },
-    },
-  },
-}))
-
-const text = styled(theme => ({
   variants: {
     color: {
       primary: {
@@ -72,40 +48,46 @@ const text = styled(theme => ({
       },
     },
   },
-}))
+  defaultVariants: {
+    fontSize: 'md',
+  },
+})
 
-export function App() {
+export type TitleProps = ExtractProps<typeof title> & {
+  children: string | string[]
+}
+
+export function Title(props: TitleProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <Box
-        style={box({
-          background: 'secondary',
-          style: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-          },
-        })}
-      >
-        <Text
-          style={text({
-            color: 'primary',
-            fontSize: 'md',
-            style: {
-              margin: 20,
-            },
-          })}
-        >
-          Hello world
-        </Text>
-      </Box>
-    </ThemeProvider>
+    <Text
+      style={[
+        title.base,
+        title.color[props.color],
+        title.fontSize[props.fontSize],
+      ]}
+    >
+      {props.children}
+    </Text>
   )
 }
 ```
 
-### Soon:
+```tsx
+// src/app.tsx
 
-- `defaultVariants`
-- `VariantProps<typeof component>`
+import { ThemeProvider, theme } from './motif'
+import { Title } from './title'
+
+export function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <Title
+        color="primary"
+        fontSize="md"
+      >
+        Hello world
+      </Title>
+    </ThemeProvider>
+  )
+}
+```

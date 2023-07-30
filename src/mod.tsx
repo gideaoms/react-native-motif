@@ -3,13 +3,15 @@ import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 type CombinedStyle = ImageStyle | TextStyle | ViewStyle
 
-type Config<Variants, DefaultVariants> = {
+interface Config<Variants, DefaultVariants> {
   base?: CombinedStyle
   variants?: Variants
   defaultVariants?: DefaultVariants
 }
 
-export type VariantProps<T> = Omit<{ [K in keyof T]?: keyof T[K] }, 'style'>
+type OmitUndefined<T> = T extends undefined ? never : T
+
+export type VariantProps<T> = Omit<OmitUndefined<{ [K in keyof T]?: keyof T[K] }>, 'style'>
 
 export function createTheme<T>(theme: T) {
   const Context = createContext(theme)
@@ -24,14 +26,17 @@ export function createTheme<T>(theme: T) {
     )
   }
 
-  function mergeDefaultVariants(
-    variants: Record<string, Record<string, object>>,
-    defaultVariants: Record<string, PropertyKey | undefined>,
+  function mergeDefaultVariants<
+    const Variants extends Record<PropertyKey, Record<PropertyKey, CombinedStyle>>,
+    const DefaultVariants extends { [K in keyof Variants]: keyof Variants[K] },
+  >(
+    variants: Variants,
+    defaultVariants: DefaultVariants
   ) {
     return Object.keys(defaultVariants)
       .map(function (key) {
         const variant = variants[key]
-        const defaultVariant = defaultVariants[key] as string
+        const defaultVariant = defaultVariants[key]
         return variant[defaultVariant]
       })
       .reduce(function (acc, curr) {
@@ -40,7 +45,7 @@ export function createTheme<T>(theme: T) {
   }
 
   function styled<
-    const Variants extends Record<string, Record<string, CombinedStyle>>,
+    const Variants extends Record<PropertyKey, Record<PropertyKey, CombinedStyle>>,
     const DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
   >(config: Config<Variants, DefaultVariants>) {
     const defaultVariants = mergeDefaultVariants(

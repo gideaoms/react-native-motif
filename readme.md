@@ -68,8 +68,8 @@ export function Title(props: TitleProps) {
     <Text
       style={[
         title.base,
-        title.color[props.color!],
-        title.fontSize[props.fontSize!],
+        title.color.get(props.color),
+        title.fontSize.get(props.fontSize),
       ]}
     >
       {props.children}

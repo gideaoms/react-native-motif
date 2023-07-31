@@ -30,9 +30,9 @@ export function createTheme<T>(theme: T) {
   >(variants: Variants, defaultVariants: DefaultVariants): CombinedStyle {
     return Object.keys(defaultVariants)
       .map(function (key) {
-        const variant = variants[key]
-        const defaultVariant = defaultVariants[key]
-        return variant[defaultVariant]
+        const variant = variants[key] ?? {}
+        const defaultVariant = defaultVariants[key] ?? {}
+        return variant[defaultVariant] ?? {}
       })
       .reduce(function (acc, curr) {
         return { ...acc, ...curr }

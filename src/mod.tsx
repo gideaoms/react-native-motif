@@ -9,9 +9,7 @@ interface Config<Variants, DefaultVariants> {
   defaultVariants?: DefaultVariants
 }
 
-type OmitUndefined<T> = T extends undefined ? never : T
-
-export type VariantProps<T> = Omit<OmitUndefined<{ [K in keyof T]?: keyof T[K] }>, 'style'>
+export type VariantProps<T> = Omit<{ [K in keyof T]?: keyof T[K] }, 'style'>
 
 export function createTheme<T>(theme: T) {
   const Context = createContext(theme)
@@ -26,13 +24,10 @@ export function createTheme<T>(theme: T) {
     )
   }
 
-  function mergeDefaultVariants<
+  function getDefaultVariantStyle<
     const Variants extends Record<PropertyKey, Record<PropertyKey, CombinedStyle>>,
     const DefaultVariants extends { [K in keyof Variants]: keyof Variants[K] },
-  >(
-    variants: Variants,
-    defaultVariants: DefaultVariants
-  ) {
+  >(variants: Variants, defaultVariants: DefaultVariants): CombinedStyle {
     return Object.keys(defaultVariants)
       .map(function (key) {
         const variant = variants[key]
@@ -47,13 +42,14 @@ export function createTheme<T>(theme: T) {
   function styled<
     const Variants extends Record<PropertyKey, Record<PropertyKey, CombinedStyle>>,
     const DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
-  >(config: Config<Variants, DefaultVariants>) {
-    const defaultVariants = mergeDefaultVariants(
+  >(
+    config: Config<Variants, DefaultVariants>,
+  ): { style: CombinedStyle } & { [K in keyof Variants]: Variants[K] } {
+    const defaultVariantsStyle = getDefaultVariantStyle(
       config.variants ?? {},
       config.defaultVariants ?? {},
     )
-    const style = { ...config.base!, ...defaultVariants }
-    return { style, ...config.variants! }
+    return { style: config.base!, ...defaultVariantsStyle, ...config.variants! }
   }
 
   return {

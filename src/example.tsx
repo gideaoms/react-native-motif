@@ -39,15 +39,19 @@ const title = styled({
   },
 })
 
-type TitleProps = VariantProps<typeof title> & { children: string }
+type TitleProps = VariantProps<typeof title>
 
-export function Title(props: TitleProps) {
+type Props = TitleProps & {
+  children: string
+}
+
+export function Title(props: Props) {
   return (
     <Text
       style={[
         title.style,
-        title.color[props.color!],
         title.fontSize[props.fontSize!],
+        title.color[props.color!],
       ]}
     >
       {props.children}

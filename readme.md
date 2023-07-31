@@ -2,6 +2,10 @@
 
 Have fun creating UI for React Native.
 
+```cmd
+npm install react-native-motif
+```
+
 ```tsx
 // src/motif.tsx
 
@@ -53,7 +57,9 @@ const title = styled({
   },
 })
 
-export type TitleProps = VariantProps<typeof title> & {
+type TitleVariants = VariantProps<typeof title>
+
+export type TitleProps = TitleVariants & {
   children: string
 }
 

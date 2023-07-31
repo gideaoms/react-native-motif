@@ -18,9 +18,9 @@ export function createTheme<T>(theme: T) {
     return useContext(Context)
   }
 
-  function ThemeProvider(props: { children: ReactNode; theme: T }) {
+  function ThemeProvider(props: { children: ReactNode }) {
     return (
-      <Context.Provider value={props.theme}>{props.children}</Context.Provider>
+      <Context.Provider value={theme}>{props.children}</Context.Provider>
     )
   }
 

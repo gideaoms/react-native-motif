@@ -1,7 +1,7 @@
 import { Text } from 'react-native'
 import { createTheme, VariantProps } from './mod'
 
-const { styled, theme } = createTheme({
+const { styled, theme, ThemeProvider } = createTheme({
   colors: {
     primary: 'red',
     secondary: 'blue',
@@ -47,14 +47,16 @@ type Props = TitleVariants & {
 
 export function Title(props: Props) {
   return (
-    <Text
-      style={[
-        title.style,
-        title.fontSize[props.fontSize!],
-        title.color[props.color!],
-      ]}
-    >
-      {props.children}
-    </Text>
+    <ThemeProvider>
+      <Text
+        style={[
+          title.style,
+          title.fontSize[props.fontSize!],
+          title.color[props.color!],
+        ]}
+      >
+        {props.children}
+      </Text>
+    </ThemeProvider>
   )
 }

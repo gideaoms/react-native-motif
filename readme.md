@@ -81,12 +81,12 @@ export function Title(props: TitleProps) {
 ```tsx
 // src/app.tsx
 
-import { ThemeProvider, theme } from './motif'
+import { ThemeProvider } from './motif'
 import { Title } from './title'
 
 export function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <Title
         color="primary"
         fontSize="md"

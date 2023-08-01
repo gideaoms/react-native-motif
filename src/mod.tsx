@@ -36,32 +36,33 @@ export function createTheme<T>(theme: T) {
     >,
     const DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
   >(config: Config<Variants, DefaultVariants>) {
-    const variants = {} as {
+    const mappedVariants = {} as {
       [K in keyof Variants]: {
         [Y in keyof Variants[K]]: CombinedStyle
       } & {
         get: (
-          key?: keyof Variants[K] extends 'true' | 'false'
+          variant?: keyof Variants[K] extends 'true' | 'false'
             ? boolean
             : keyof Variants[K],
-        ) => CombinedStyle
+        ) => CombinedStyle | undefined
       }
     }
     for (const key in config.variants) {
-      const pairs = {
-        get(key: string) {
-          return this[key]
+      mappedVariants[key] = {
+        ...config.variants[key],
+        get(variant) {
+          if (!variant) return
+          return this[String(variant)]
         },
-      } as {
-        [K in keyof Variants]: CombinedStyle
       }
-      for (const variant in config.variants[key]) {
-        pairs[variant] = config.variants[key][variant]
+      if (config.defaultVariants?.[key]) {
+        config.base = {
+          ...config.base,
+          ...config.variants[key][config.defaultVariants[key] ?? ''],
+        }
       }
-      //  @ts-ignore
-      variants[key] = pairs
     }
-    return { style: config.base, ...variants }
+    return { style: config.base, ...mappedVariants }
   }
 
   return {

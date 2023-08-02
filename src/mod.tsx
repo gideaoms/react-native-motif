@@ -3,10 +3,34 @@ import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 type CombinedStyle = ViewStyle | TextStyle | ImageStyle
 
-type Config<Variants, DefaultVariants> = {
+type ConfigProps<T, U> = {
   base?: CombinedStyle
-  variants?: Variants
-  defaultVariants?: DefaultVariants
+  variants?: T
+  defaultVariants?: U
+}
+
+type ConfigVariantsResult<T> = {
+  [K in keyof T]: {
+    [U in keyof T[K]]: T[K][U]
+  } & {
+    get: <J extends keyof T[K]>(
+      pair?: J extends 'true' | 'false' ? boolean : J,
+    ) => T[K][J] | undefined
+  }
+}
+
+type ConfigResult<T> = {
+  style?: CombinedStyle
+} & ConfigVariantsResult<T>
+
+type ConfigVariantsProps<T> = {
+  [K in keyof T]: {
+    [U in keyof T[K]]: CombinedStyle
+  }
+}
+
+type ConfigDefaultVariants<T> = {
+  [K in keyof T]?: keyof T[K]
 }
 
 export type VariantProps<T> = Omit<
@@ -30,44 +54,36 @@ export function createTheme<T>(theme: T) {
   }
 
   function styled<
-    const Variants extends Record<
-      PropertyKey,
-      Record<PropertyKey, CombinedStyle>
-    >,
-    const DefaultVariants extends { [K in keyof Variants]?: keyof Variants[K] },
-  >(config: Config<Variants, DefaultVariants>) {
-    const mappedVariants = {} as {
-      [K in keyof Variants]: {
-        [Y in keyof Variants[K]]: CombinedStyle
-      } & {
-        get: (
-          variant?: keyof Variants[K] extends 'true' | 'false'
-            ? boolean
-            : keyof Variants[K],
-        ) => CombinedStyle | undefined
-      }
+    const T extends ConfigVariantsProps<T>,
+    const U extends ConfigDefaultVariants<T>,
+  >(config: ConfigProps<T, U>) {
+    if (!config.variants) {
+      return { style: config.base } as ConfigResult<T>
     }
-    for (const key in config.variants) {
-      mappedVariants[key] = {
-        ...config.variants[key],
-        get(variant) {
-          if (!variant) return
-          return this[String(variant)]
+    const variants = {} as ConfigVariantsResult<T>
+    for (const variant in config.variants) {
+      variants[variant] = {
+        ...config.variants[variant],
+        get(pair) {
+          if (pair === undefined) return
+          // @ts-ignore
+          return config.variants?.[variant][pair]
         },
       }
-      if (config.defaultVariants?.[key]) {
+      const defaultVariant = config.defaultVariants?.[variant]
+      if (defaultVariant && defaultVariant in config.variants[variant]) {
         config.base = {
           ...config.base,
-          ...config.variants[key][config.defaultVariants[key] ?? ''],
+          ...config.variants[variant][defaultVariant],
         }
       }
     }
-    return { style: config.base, ...mappedVariants }
+    return { style: config.base, ...variants }
   }
 
   return {
-    styled,
     theme,
+    styled,
     useTheme,
     ThemeProvider,
   }

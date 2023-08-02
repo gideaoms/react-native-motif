@@ -54,8 +54,8 @@ export function createTheme<T>(theme: T) {
   }
 
   function styled<
-    const T extends ConfigVariantsProps<T>,
-    const U extends ConfigDefaultVariantsProps<T>,
+    T extends ConfigVariantsProps<T>,
+    U extends ConfigDefaultVariantsProps<T>,
   >(config: ConfigProps<T, U>) {
     if (!config.variants) {
       return { style: config.base } as ConfigResult<T>
@@ -67,7 +67,7 @@ export function createTheme<T>(theme: T) {
         get(pair) {
           if (pair === undefined) return
           // @ts-ignore
-          return config.variants?.[variant][pair]
+          return this[pair]
         },
       }
       const defaultVariant = config.defaultVariants?.[variant]
@@ -78,7 +78,7 @@ export function createTheme<T>(theme: T) {
         }
       }
     }
-    return { style: config.base, ...variants }
+    return { style: { ...config.base }, ...variants }
   }
 
   return {

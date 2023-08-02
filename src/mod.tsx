@@ -29,7 +29,7 @@ type ConfigVariantsProps<T> = {
   }
 }
 
-type ConfigDefaultVariants<T> = {
+type ConfigDefaultVariantsProps<T> = {
   [K in keyof T]?: keyof T[K]
 }
 
@@ -55,7 +55,7 @@ export function createTheme<T>(theme: T) {
 
   function styled<
     const T extends ConfigVariantsProps<T>,
-    const U extends ConfigDefaultVariants<T>,
+    const U extends ConfigDefaultVariantsProps<T>,
   >(config: ConfigProps<T, U>) {
     if (!config.variants) {
       return { style: config.base } as ConfigResult<T>

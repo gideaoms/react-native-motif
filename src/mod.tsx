@@ -1,6 +1,5 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
-import { css } from 'styled-components/native'
 
 type CombinedStyle = ViewStyle | TextStyle | ImageStyle
 

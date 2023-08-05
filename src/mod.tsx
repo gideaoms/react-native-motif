@@ -1,11 +1,12 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
+import { css } from 'styled-components/native'
 
 type CombinedStyle = ViewStyle | TextStyle | ImageStyle
 
 type ConfigProps<T, U> = {
   base?: CombinedStyle
-  variants?: T
+  variants?: ConfigVariantsProps<T>
   defaultVariants?: U
 }
 
@@ -42,7 +43,7 @@ export type VariantProps<T> = Omit<
   'style'
 >
 
-export function createTheme<T>(theme: T) {
+export function createTheme<const T>(theme: T) {
   const Context = createContext(theme)
 
   function useTheme() {
@@ -54,14 +55,15 @@ export function createTheme<T>(theme: T) {
   }
 
   function styled<
-    T extends ConfigVariantsProps<T>,
-    U extends ConfigDefaultVariantsProps<T>,
+    const T extends ConfigVariantsProps<T>,
+    const U extends ConfigDefaultVariantsProps<T>,
   >(config: ConfigProps<T, U>) {
     if (!config.variants) {
       return { style: config.base } as ConfigResult<T>
     }
     const variants = {} as ConfigVariantsResult<T>
     for (const variant in config.variants) {
+      // @ts-ignore
       variants[variant] = {
         ...config.variants[variant],
         get(pair) {

@@ -15,7 +15,13 @@ export function styled<
 >(variants: T) {
   const pairs = {
     ...variants,
-    get<J extends keyof T>(pair?: J extends 'true' | 'false' ? boolean : J) {
+    get(
+      pair?: keyof T extends number
+        ? `${keyof T}`
+        : keyof T extends 'true' | 'false'
+        ? boolean
+        : keyof T,
+    ) {
       if (!pair) return
       return this[pair as unknown as keyof T]
     },

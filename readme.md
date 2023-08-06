@@ -11,7 +11,7 @@ npm install react-native-motif
 
 import { createTheme } from 'react-native-motif'
 
-export const { ThemeProvider, useTheme, theme } = createTheme({
+export const { ThemeProvider, useTheme } = createTheme({
   colors: {
     primary: 'red',
     secondary: 'blue',
@@ -27,8 +27,8 @@ export const { ThemeProvider, useTheme, theme } = createTheme({
 // src/components/title.tsx
 
 import { Text } from 'react-native'
-import { VariantProps } from 'react-native-motif'
-import { styled, theme } from '../motif'
+import { VariantProps, styled } from 'react-native-motif'
+import { theme } from '../motif'
 
 const color = styled({
   primary: {

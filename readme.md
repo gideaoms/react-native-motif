@@ -2,8 +2,6 @@
 
 Have fun creating UI for React Native.
 
-![Motif 2023-08-02 17-03-37](https://github.com/gideaoms/react-native-motif/assets/6031121/738e5f19-a124-4d9a-bc2d-0ee87927a1c5)
-
 ```cmd
 npm install react-native-motif
 ```
@@ -13,7 +11,7 @@ npm install react-native-motif
 
 import { createTheme } from 'react-native-motif'
 
-export const { ThemeProvider, useTheme, theme, styled } = createTheme({
+export const { ThemeProvider, useTheme, theme } = createTheme({
   colors: {
     primary: 'red',
     secondary: 'blue',
@@ -26,52 +24,42 @@ export const { ThemeProvider, useTheme, theme, styled } = createTheme({
 ```
 
 ```tsx
-// src/title.tsx
+// src/components/title.tsx
 
-import { VariantProps } from 'react-native-motif'
 import { Text } from 'react-native'
-import { styled, theme } from './motif'
+import { VariantProps } from 'react-native-motif'
+import { styled, theme } from '../motif'
 
-const title = styled({
-  base: {
-    textAlign: 'center',
+const color = styled({
+  primary: {
+    color: theme.colors.primary,
   },
-  variants: {
-    color: {
-      primary: {
-        color: theme.colors.primary,
-      },
-      secondary: {
-        color: theme.colors.secondary,
-      },
-    },
-    fontSize: {
-      md: {
-        fontSize: theme.fontSizes.md,
-      },
-      sm: {
-        fontSize: theme.fontSizes.sm,
-      },
-    },
-  },
-  defaultVariants: {
-    fontSize: 'md',
+  secondary: {
+    color: theme.colors.secondary,
   },
 })
 
-type TitleVariants = VariantProps<typeof title>
+const fontSize = styled({
+  md: {
+    fontSize: theme.fontSizes.md,
+  },
+  sm: {
+    fontSize: theme.fontSizes.sm,
+  },
+})
 
-export type TitleProps = TitleVariants & {
-  children: string
+export type TitleProps = {
+  children: string | string[]
+  color?: VariantProps<typeof color>
+  fontSize?: VariantProps<typeof fontSize>
 }
 
 export function Title(props: TitleProps) {
   return (
     <Text
       style={[
-        title.base,
-        title.color.get(props.color),
-        title.fontSize.get(props.fontSize),
+        color.get(props.color),
+        fontSize.get(props.fontSize) ?? fontSize.sm,
       ]}
     >
       {props.children}
@@ -84,7 +72,7 @@ export function Title(props: TitleProps) {
 // src/app.tsx
 
 import { ThemeProvider } from './motif'
-import { Title } from './title'
+import { Title } from './components/title'
 
 export function App() {
   return (

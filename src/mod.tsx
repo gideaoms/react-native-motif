@@ -1,9 +1,14 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-export type VariantProps<T> = keyof T extends 'true' | 'false' | 'get'
-  ? boolean
-  : keyof Omit<T, 'get'>
+export type VariantProps<T> = Exclude<
+  keyof T extends number | 'get'
+    ? `${keyof T}`
+    : keyof T extends 'true' | 'false' | 'get'
+    ? boolean
+    : keyof T,
+  'get'
+>
 
 export function styled<
   const T extends { [k in string]: ViewStyle | TextStyle | ImageStyle },

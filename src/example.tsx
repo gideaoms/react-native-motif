@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native'
-import { createTheme, VariantProps, styled } from './mod'
+import { createTheme, VariantProps, createStyle } from './mod'
 
 const { theme, ThemeProvider } = createTheme({
   colors: {
@@ -12,7 +12,7 @@ const { theme, ThemeProvider } = createTheme({
   },
 })
 
-const color = styled({
+const color = createStyle({
   primary: {
     color: theme.colors.primary,
   },
@@ -21,7 +21,7 @@ const color = styled({
   },
 })
 
-const fontSize = styled({
+const fontSize = createStyle({
   sm: {
     fontSize: theme.fontSizes.sm,
   },
@@ -36,7 +36,7 @@ type Props = {
   fontSize?: VariantProps<typeof fontSize>
 }
 
-const full = styled({
+const full = createStyle({
   true: {
     width: '100%',
   },

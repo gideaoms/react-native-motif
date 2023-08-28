@@ -29,10 +29,10 @@ export const { ThemeProvider, useTheme } = createTheme({
 // src/components/title.tsx
 
 import { Text } from 'react-native'
-import { VariantProps, styled } from 'react-native-motif'
+import { VariantProps, createStyle } from 'react-native-motif'
 import { theme } from '../motif'
 
-const color = styled({
+const color = createStyle({
   primary: {
     color: theme.colors.primary,
   },
@@ -41,7 +41,7 @@ const color = styled({
   },
 })
 
-const fontSize = styled({
+const fontSize = createStyle({
   md: {
     fontSize: theme.fontSizes.md,
   },

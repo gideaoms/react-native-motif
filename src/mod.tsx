@@ -10,7 +10,7 @@ export type VariantProps<T> = Exclude<
   'get'
 >
 
-export function styled<
+export function createStyle<
   const T extends { [k in string]: ViewStyle | TextStyle | ImageStyle },
 >(variants: T) {
   const pairs = {

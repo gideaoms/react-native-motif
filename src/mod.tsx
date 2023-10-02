@@ -50,8 +50,8 @@ export function createStyle<T extends InputVariants>(variants: T) {
       },
     }
   }, {} as OutputVariants<T>)
-  return function <U extends InputCustom>(custom?: U) {
-    return Object.assign({ base: custom?.base }, variantsWithGetFn) as U &
+  return function <U extends InputCustom>(custom: U) {
+    return Object.assign({ base: custom.base }, variantsWithGetFn) as U &
       OutputVariants<T>
   }
 }

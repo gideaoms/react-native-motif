@@ -34,7 +34,7 @@ export type VariantProps<T> = Omit<
       ? boolean
       : keyof Omit<T[K], 'get'>
   },
-  'style'
+  'base'
 >
 
 export function createStyle<const T extends InputStyle>(style: T) {

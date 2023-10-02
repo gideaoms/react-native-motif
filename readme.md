@@ -2,8 +2,6 @@
 
 Have fun creating UI for React Native.
 
-![2023-08-02 17-03-37](https://github.com/gideaoms/react-native-motif/assets/6031121/8e5150ea-3079-43c9-906a-63ed7f2ac612)
-
 ```cmd
 npm install react-native-motif
 ```

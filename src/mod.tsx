@@ -3,30 +3,25 @@ import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 type Style = ViewStyle | TextStyle | ImageStyle
 
-type InputStyle = {
-  base?: Style
-  variants?: InputVariants
-}
-
 type InputVariants = {
-  [K in string]: {
-    [U in string]: Style
+  [k in string]: {
+    [k in string]: Style
   }
 }
 
 type OutputVariants<T> = {
-  [K in keyof T]: {
-    [U in keyof T[K]]: T[K][U]
+  [K1 in keyof T]: {
+    [K2 in keyof T[K1]]: T[K1][K2]
   } & {
-    get<J extends keyof T[K]>(
+    get<J extends keyof T[K1]>(
       key?: J extends 'true' | 'false' ? boolean : J,
-    ): T[K][J]
+    ): T[K1][J] | undefined
   }
 }
 
-type OutputStyle<T extends InputStyle> = {
-  base?: T['base']
-} & OutputVariants<T['variants']>
+type InputCustom = {
+  base?: Style
+}
 
 export type VariantProps<T> = Omit<
   {
@@ -37,19 +32,28 @@ export type VariantProps<T> = Omit<
   'base'
 >
 
-export function createStyle<const T extends InputStyle>(style: T) {
-  const variants = {}
-  for (const variant in style.variants) {
-    // @ts-ignore
-    variants[variant] = {
-      ...style.variants[variant],
-      // @ts-ignore
-      get(key) {
-        return this[key]
+export function createStyle<T extends InputVariants>(variants: T) {
+  const variantsWithGetFn = Object.keys(variants).reduce(function (
+    previous,
+    current: keyof OutputVariants<T>,
+  ) {
+    return {
+      ...previous,
+      [current]: {
+        ...variants[current],
+        get(key?: string) {
+          if (key === undefined) {
+            return undefined
+          }
+          return this[key]
+        },
       },
     }
+  }, {} as OutputVariants<T>)
+  return function <U extends InputCustom>(custom?: U) {
+    return Object.assign({ base: custom?.base }, variantsWithGetFn) as U &
+      OutputVariants<T>
   }
-  return style as OutputStyle<T>
 }
 
 export function createTheme<T>(theme: T) {

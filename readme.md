@@ -31,25 +31,23 @@ import { VariantProps, createStyle } from 'react-native-motif'
 import { theme } from '../motif'
 
 const title = createStyle({
-  variants: {
-    color: {
-      primary: {
-        color: theme.colors.primary,
-      },
-      secondary: {
-        color: theme.colors.secondary,
-      },
+  color: {
+    primary: {
+      color: theme.colors.primary,
     },
-    fontSize: {
-      md: {
-        fontSize: theme.fontSizes.md,
-      },
-      sm: {
-        fontSize: theme.fontSizes.sm,
-      },
+    secondary: {
+      color: theme.colors.secondary,
     },
-  }
-})
+  },
+  fontSize: {
+    md: {
+      fontSize: theme.fontSizes.md,
+    },
+    sm: {
+      fontSize: theme.fontSizes.sm,
+    },
+  },
+})()
 
 export type TitleProps = {
   children: string | string[]
@@ -60,7 +58,7 @@ export function Title(props: TitleProps) {
     <Text
       style={[
         title.color.get(props.color),
-        title.fontSize.get(props.fontSize) ?? fontSize.sm,
+        title.fontSize.get(props.fontSize) ?? title.fontSize.sm,
       ]}
     >
       {props.children}

@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native'
-import { createTheme, VariantProps, createStyle } from './module'
+import { createTheme, VariantProps, createStyle } from './mod'
 
 const { theme, ThemeProvider } = createTheme({
   colors: {
@@ -13,37 +13,34 @@ const { theme, ThemeProvider } = createTheme({
 })
 
 const title = createStyle({
-  variants: {
-    color: {
-      primary: {
-        color: theme.colors.primary,
-      },
-      secondary: {
-        color: 'red',
-      },
+  color: {
+    primary: {
+      color: theme.colors.primary,
     },
-    fontSize: {
-      sm: {
-        fontSize: theme.fontSizes.sm,
-      },
-      lg: {
-        fontSize: theme.fontSizes.lg,
-      },
+    secondary: {
+      color: 'red',
     },
   },
-})
+  fontSize: {
+    sm: {
+      fontSize: theme.fontSizes.sm,
+    },
+    lg: {
+      fontSize: theme.fontSizes.lg,
+    },
+  },
+})()
 
 const button = createStyle({
+  full: {
+    true: {
+      width: '100%',
+    },
+  },
+})({
   base: {
     padding: 10,
     backgroundColor: 'yellow',
-  },
-  variants: {
-    full: {
-      true: {
-        width: '100%',
-      },
-    },
   },
 })
 

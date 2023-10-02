@@ -1,6 +1,6 @@
 {
   "name": "react-native-motif",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "React Native Library to build UI",
   "main": "dist/mod.js",
   "module": "dist/mod.mjs",
@@ -39,6 +39,6 @@
     "react-native": "^0.72.3",
     "rimraf": "^5.0.1",
     "tsup": "^7.1.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   }
 }

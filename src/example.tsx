@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native'
-import { createTheme, VariantProps, createStyle } from './mod'
+import { createTheme, VariantProps, createStyle } from './module'
 
 const { theme, ThemeProvider } = createTheme({
   colors: {
@@ -12,54 +12,62 @@ const { theme, ThemeProvider } = createTheme({
   },
 })
 
-const color = createStyle({
-  primary: {
-    color: theme.colors.primary,
-  },
-  secondary: {
-    color: 'red',
+const title = createStyle({
+  variants: {
+    color: {
+      primary: {
+        color: theme.colors.primary,
+      },
+      secondary: {
+        color: 'red',
+      },
+    },
+    fontSize: {
+      sm: {
+        fontSize: theme.fontSizes.sm,
+      },
+      lg: {
+        fontSize: theme.fontSizes.lg,
+      },
+    },
   },
 })
 
-const fontSize = createStyle({
-  sm: {
-    fontSize: theme.fontSizes.sm,
+const button = createStyle({
+  base: {
+    padding: 10,
+    backgroundColor: 'yellow',
   },
-  lg: {
-    fontSize: theme.fontSizes.lg,
-  },
-})
-
-type Props = {
-  children: string | string[]
-  color?: VariantProps<typeof color>
-  fontSize?: VariantProps<typeof fontSize>
-}
-
-const full = createStyle({
-  true: {
-    width: '100%',
+  variants: {
+    full: {
+      true: {
+        width: '100%',
+      },
+    },
   },
 })
 
 export type ButtonProps = {
   title: string
   onPress: () => void
-  full?: VariantProps<typeof full>
-}
+} & VariantProps<typeof button>
 
 export function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[full.get(props.full)]}
+      style={[button.base, button.full.get(true)]}
     >
       <Text>{props.title}</Text>
     </TouchableOpacity>
   )
 }
 
-export function Title(props: Props) {
+type TitleProps = {
+  children: string | string[]
+} & VariantProps<typeof title>
+
+export function Title(props: TitleProps) {
   return (
     <ThemeProvider>
       <Button
@@ -67,7 +75,12 @@ export function Title(props: Props) {
         onPress={() => {}}
         full
       />
-      <Text style={[fontSize.get(props.fontSize), color.get(props.color)]}>
+      <Text
+        style={[
+          title.fontSize.get(props.fontSize),
+          title.color.get(props.color),
+        ]}
+      >
         {props.children}
       </Text>
     </ThemeProvider>

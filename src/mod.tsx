@@ -1,32 +1,55 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-export type VariantProps<T> = Exclude<
-  keyof T extends number | 'get'
-    ? `${keyof T}`
-    : keyof T extends 'true' | 'false' | 'get'
-    ? boolean
-    : keyof T,
-  'get'
+type Style = ViewStyle | TextStyle | ImageStyle
+
+type InputStyle = {
+  base?: Style
+  variants?: InputVariants
+}
+
+type InputVariants = {
+  [K in string]: {
+    [U in string]: Style
+  }
+}
+
+type OutputVariants<T> = {
+  [K in keyof T]: {
+    [U in keyof T[K]]: T[K][U]
+  } & {
+    get<J extends keyof T[K]>(
+      key?: J extends 'true' | 'false' ? boolean : J,
+    ): T[K][J]
+  }
+}
+
+type OutputStyle<T extends InputStyle> = {
+  base?: T['base']
+} & OutputVariants<T['variants']>
+
+export type VariantProps<T> = Omit<
+  {
+    [K in keyof T]?: keyof T[K] extends 'true' | 'false' | 'get'
+      ? boolean
+      : keyof Omit<T[K], 'get'>
+  },
+  'style'
 >
 
-export function createStyle<
-  const T extends { [k in string]: ViewStyle | TextStyle | ImageStyle },
->(variants: T) {
-  const pairs = {
-    ...variants,
-    get(
-      pair?: keyof T extends number
-        ? `${keyof T}`
-        : keyof T extends 'true' | 'false'
-        ? boolean
-        : keyof T,
-    ) {
-      if (!pair) return
-      return this[pair as unknown as keyof T]
-    },
+export function createStyle<const T extends InputStyle>(style: T) {
+  const variants = {}
+  for (const variant in style.variants) {
+    // @ts-ignore
+    variants[variant] = {
+      ...style.variants[variant],
+      // @ts-ignore
+      get(key) {
+        return this[key]
+      },
+    }
   }
-  return pairs
+  return style as OutputStyle<T>
 }
 
 export function createTheme<T>(theme: T) {

@@ -1,15 +1,19 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
+
 type Style = ViewStyle | TextStyle | ImageStyle
 
-type InputVariants = {
+type InputVariants = Prettify<{
   [k in string]: {
     [k in string]: Style
   }
-}
+}>
 
-type OutputVariants<T> = {
+type OutputVariants<T> = Prettify<{
   [K1 in keyof T]: {
     [K2 in keyof T[K1]]: T[K1][K2]
   } & {
@@ -17,7 +21,7 @@ type OutputVariants<T> = {
       key?: J extends 'true' | 'false' ? boolean : J,
     ): T[K1][J] | undefined
   }
-}
+}>
 
 type InputCustom = {
   base?: Style
@@ -50,7 +54,7 @@ export function createStyle<T extends InputVariants>(variants: T) {
       },
     }
   }, {} as OutputVariants<T>)
-  return function <U extends InputCustom>(custom: U) {
+  return function <U extends InputCustom>(custom = {} as U) {
     return Object.assign({ base: custom.base }, variantsWithGetFn) as U &
       OutputVariants<T>
   }

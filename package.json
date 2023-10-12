@@ -1,6 +1,6 @@
 {
   "name": "react-native-motif",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "React Native Library to build UI",
   "main": "dist/mod.js",
   "module": "dist/mod.mjs",

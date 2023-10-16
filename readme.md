@@ -68,9 +68,48 @@ export function Title(props: TitleProps) {
 ```
 
 ```tsx
+// src/components/button.tsx
+
+import { TouchableOpacity } from 'react-native'
+import { VariantProps, createStyle } from 'react-native-motif'
+import { theme } from '../motif'
+
+const button = createStyle({
+  full: {
+    true: {
+      width: '100%',
+    },
+  },
+})({
+  base: {
+    padding: 10,
+    backgroundColor: theme.colors.primary,
+  },
+})
+
+export type ButtonProps = {
+  children: ReactNode
+  onPress: () => void
+} & VariantProps<typeof button>
+
+export function Title(props: ButtonProps) {
+  return (
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[button.base, button.full.get(true)]}
+    >
+      {props.children}
+    </TouchableOpacity>
+  )
+}
+```
+
+```tsx
 // src/app.tsx
 
+import { Text } from 'react-native'
 import { ThemeProvider } from './motif'
+import { Button } from './components/button'
 import { Title } from './components/title'
 
 export function App() {
@@ -82,6 +121,11 @@ export function App() {
       >
         Hello world
       </Title>
+      <Button>
+        <Text>
+          Press me
+        </Text>
+      </Button>
     </ThemeProvider>
   )
 }

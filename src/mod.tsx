@@ -36,15 +36,12 @@ export type VariantProps<T> = Omit<
   'base'
 >
 
-export function createStyle<T extends InputVariants>(variants: T) {
-  const variantsWithGetFn = Object.keys(variants).reduce(function (
-    previous,
-    current: keyof OutputVariants<T>,
-  ) {
-    return {
+export function createStyle<T extends InputVariants>(variants1: T) {
+  const variants2 = Object.keys(variants1).reduce(
+    (previous, current: keyof OutputVariants<T>) => ({
       ...previous,
       [current]: {
-        ...variants[current],
+        ...variants1[current],
         get(key?: string) {
           if (key === undefined) {
             return undefined
@@ -52,10 +49,11 @@ export function createStyle<T extends InputVariants>(variants: T) {
           return this[key]
         },
       },
-    }
-  }, {} as OutputVariants<T>)
+    }),
+    {} as OutputVariants<T>,
+  )
   return function <U extends InputCustom>(custom = {} as U) {
-    return Object.assign({ base: custom.base }, variantsWithGetFn) as U &
+    return Object.assign({ base: custom.base }, variants2) as U &
       OutputVariants<T>
   }
 }

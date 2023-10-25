@@ -92,11 +92,11 @@ export type ButtonProps = {
   onPress: () => void
 } & VariantProps<typeof button>
 
-export function Title(props: ButtonProps) {
+export function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, button.full.get(true)]}
+      style={[button.base, button.full.get(props.full)]}
     >
       {props.children}
     </TouchableOpacity>

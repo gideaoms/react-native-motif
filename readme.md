@@ -99,7 +99,10 @@ export function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, variant(button.variants.full, props.full)]}
+      style={[
+        button.base,
+        variant(button.variants.full, props.full)
+      ]}
     >
       {props.children}
     </TouchableOpacity>

@@ -60,7 +60,7 @@ export function Title(props: TitleProps) {
     <Text
       style={[
         variant(title.variants.color, props.color),
-        variant(title.variants.fontSize, props.fontSize) ?? title.variants.fontSize.sm,
+        variant(title.variants.fontSize, props.fontSize),
       ]}
     >
       {props.children}

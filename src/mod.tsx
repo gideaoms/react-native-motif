@@ -1,61 +1,26 @@
 import { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
-type Prettify<T> = {
-  [K in keyof T]: T[K]
-} & {}
-
 type Style = ViewStyle | TextStyle | ImageStyle
 
-type InputVariants = Prettify<{
-  [k in string]: {
-    [k in string]: Style
-  }
-}>
-
-type OutputVariants<T> = Prettify<{
-  [K1 in keyof T]: {
-    [K2 in keyof T[K1]]: T[K1][K2]
-  } & {
-    get<J extends keyof T[K1]>(
-      key?: J extends 'true' | 'false' ? boolean : J,
-    ): T[K1][J] | undefined
-  }
-}>
-
-type InputCustom = {
+type Config = {
   base?: Style
+  variants?: {
+    [k in string]: {
+      [k in string]: Style
+    }
+  }
 }
 
-export type VariantProps<T> = Omit<
-  {
-    [K in keyof T]?: keyof T[K] extends 'true' | 'false' | 'get'
-      ? boolean
-      : keyof Omit<T[K], 'get'>
-  },
-  'base'
->
+export function styled<T extends Config>(config: T) {
+  return config
+}
 
-export function createStyle<T extends InputVariants>(variants1: T) {
-  const variants2 = Object.keys(variants1).reduce(
-    (previous, current: keyof OutputVariants<T>) => ({
-      ...previous,
-      [current]: {
-        ...variants1[current],
-        get(key?: string) {
-          if (key === undefined) {
-            return undefined
-          }
-          return this[key]
-        },
-      },
-    }),
-    {} as OutputVariants<T>,
-  )
-  return function <U extends InputCustom>(custom = {} as U) {
-    return Object.assign({ base: custom.base }, variants2) as U &
-      OutputVariants<T>
+export function get<T, K extends keyof T>(variants: T, key?: K | boolean) {
+  if (key === undefined) {
+    return undefined
   }
+  return variants[key as K]
 }
 
 export function createTheme<T>(theme: T) {
@@ -74,4 +39,10 @@ export function createTheme<T>(theme: T) {
     useTheme,
     ThemeProvider,
   }
+}
+
+export type VariantProps<T extends Config> = {
+  [K in keyof T['variants']]?: keyof T['variants'][K] extends 'true' | 'false'
+    ? boolean
+    : keyof T['variants'][K]
 }

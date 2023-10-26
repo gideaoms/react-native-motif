@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity } from 'react-native'
-import { createTheme, VariantProps, createStyle } from './mod'
+import { VariantProps, createTheme, get, styled } from './mod'
+import { ReactNode } from 'react'
 
 const { theme, ThemeProvider } = createTheme({
   colors: {
@@ -12,74 +13,52 @@ const { theme, ThemeProvider } = createTheme({
   },
 })
 
-const title = createStyle({
-  color: {
-    primary: {
-      color: theme.colors.primary,
-    },
-    secondary: {
-      color: 'red',
-    },
-  },
-  fontSize: {
-    sm: {
-      fontSize: theme.fontSizes.sm,
-    },
-    lg: {
-      fontSize: theme.fontSizes.lg,
-    },
-  },
-})()
-
-const button = createStyle({
-  full: {
-    true: {
-      width: '100%',
-    },
-  },
-})({
+const button = styled({
   base: {
     padding: 10,
-    backgroundColor: 'yellow',
+  },
+  variants: {
+    fontSize: {
+      sm: {
+        fontSize: theme.fontSizes.sm,
+      },
+      lg: {
+        fontSize: theme.fontSizes.lg,
+      },
+    },
+    full: {
+      true: {
+        width: '100%',
+      },
+    },
   },
 })
 
-export type ButtonProps = {
-  title: string
-  onPress: () => void
+type ButtonProps = {
+  children: ReactNode
+  onPress(): void
 } & VariantProps<typeof button>
 
-export function Button(props: ButtonProps) {
+function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, button.full.get(true)]}
+      style={[button.base, get(button.variants.full, props.full)]}
     >
-      <Text>{props.title}</Text>
+      {props.children}
     </TouchableOpacity>
   )
 }
 
-type TitleProps = {
-  children: string | string[]
-} & VariantProps<typeof title>
-
-export function Title(props: TitleProps) {
+export function App() {
   return (
     <ThemeProvider>
       <Button
-        title="Press me"
         onPress={() => {}}
         full
-      />
-      <Text
-        style={[
-          title.fontSize.get(props.fontSize),
-          title.color.get(props.color),
-        ]}
       >
-        {props.children}
-      </Text>
+        <Text>Press me</Text>
+      </Button>
     </ThemeProvider>
   )
 }

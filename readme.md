@@ -27,27 +27,29 @@ export const { ThemeProvider, useTheme } = createTheme({
 // src/components/title.tsx
 
 import { Text } from 'react-native'
-import { VariantProps, createStyle } from 'react-native-motif'
+import { VariantProps, styled, get } from 'react-native-motif'
 import { theme } from '../motif'
 
-const title = createStyle({
-  color: {
-    primary: {
-      color: theme.colors.primary,
+const title = styled({
+  variants: {
+    color: {
+      primary: {
+        color: theme.colors.primary,
+      },
+      secondary: {
+        color: theme.colors.secondary,
+      },
     },
-    secondary: {
-      color: theme.colors.secondary,
+    fontSize: {
+      md: {
+        fontSize: theme.fontSizes.md,
+      },
+      sm: {
+        fontSize: theme.fontSizes.sm,
+      },
     },
   },
-  fontSize: {
-    md: {
-      fontSize: theme.fontSizes.md,
-    },
-    sm: {
-      fontSize: theme.fontSizes.sm,
-    },
-  },
-})()
+})
 
 export type TitleProps = {
   children: string | string[]
@@ -57,8 +59,8 @@ export function Title(props: TitleProps) {
   return (
     <Text
       style={[
-        title.color.get(props.color),
-        title.fontSize.get(props.fontSize) ?? title.fontSize.sm,
+        get(title.variants.color, props.color),
+        get(title.variants.fontSize, props.fontSize) ?? title.variants.fontSize.sm,
       ]}
     >
       {props.children}
@@ -71,19 +73,20 @@ export function Title(props: TitleProps) {
 // src/components/button.tsx
 
 import { TouchableOpacity } from 'react-native'
-import { VariantProps, createStyle } from 'react-native-motif'
+import { VariantProps, styled, get } from 'react-native-motif'
 import { theme } from '../motif'
 
-const button = createStyle({
-  full: {
-    true: {
-      width: '100%',
-    },
-  },
-})({
+const button = styled({
   base: {
     padding: 10,
     backgroundColor: theme.colors.primary,
+  },
+  variants: {
+    full: {
+      true: {
+        width: '100%',
+      },
+    },
   },
 })
 
@@ -96,7 +99,7 @@ export function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, button.full.get(props.full)]}
+      style={[button.base, get(button.variants.full, props.full)]}
     >
       {props.children}
     </TouchableOpacity>

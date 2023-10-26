@@ -27,7 +27,7 @@ export const { ThemeProvider, useTheme } = createTheme({
 // src/components/title.tsx
 
 import { Text } from 'react-native'
-import { VariantProps, styled, get } from 'react-native-motif'
+import { VariantProps, styled, variant } from 'react-native-motif'
 import { theme } from '../motif'
 
 const title = styled({
@@ -59,8 +59,8 @@ export function Title(props: TitleProps) {
   return (
     <Text
       style={[
-        get(title.variants.color, props.color),
-        get(title.variants.fontSize, props.fontSize) ?? title.variants.fontSize.sm,
+        variant(title.variants.color, props.color),
+        variant(title.variants.fontSize, props.fontSize) ?? title.variants.fontSize.sm,
       ]}
     >
       {props.children}
@@ -73,7 +73,7 @@ export function Title(props: TitleProps) {
 // src/components/button.tsx
 
 import { TouchableOpacity } from 'react-native'
-import { VariantProps, styled, get } from 'react-native-motif'
+import { VariantProps, styled, variant } from 'react-native-motif'
 import { theme } from '../motif'
 
 const button = styled({
@@ -99,7 +99,7 @@ export function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, get(button.variants.full, props.full)]}
+      style={[button.base, variant(button.variants.full, props.full)]}
     >
       {props.children}
     </TouchableOpacity>

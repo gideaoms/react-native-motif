@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity } from 'react-native'
-import { VariantProps, createTheme, get, styled } from './mod'
+import { VariantProps, createTheme, variant, styled } from './mod'
 import { ReactNode } from 'react'
 
 const { theme, ThemeProvider } = createTheme({
@@ -43,7 +43,7 @@ function Button(props: ButtonProps) {
   return (
     <TouchableOpacity
       onPress={props.onPress}
-      style={[button.base, get(button.variants.full, props.full)]}
+      style={[button.base, variant(button.variants.full, props.full)]}
     >
       {props.children}
     </TouchableOpacity>

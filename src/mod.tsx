@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext } from 'react'
+import React, { ReactNode, createContext, useContext } from 'react'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 
 type Style = ViewStyle | TextStyle | ImageStyle

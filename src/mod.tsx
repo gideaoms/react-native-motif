@@ -18,7 +18,7 @@ export function styled<T extends Config>(config: T) {
 
 export function variant<T, K extends keyof T>(variants: T, key?: K | boolean) {
   if (key === undefined) {
-    return undefined
+    return
   }
   return variants[key as K]
 }

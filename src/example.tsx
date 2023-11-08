@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { VariantProps, createTheme, variant, styled } from './mod'
 import { ReactNode } from 'react'
 
@@ -50,15 +50,69 @@ function Button(props: ButtonProps) {
   )
 }
 
-export function App() {
+const text = styled({
+  variants: {
+    fontFamily: {
+      roboto: {
+        fontFamily: 'roboto_600',
+      },
+      sans: {
+        fontFamily: 'sans_600',
+      },
+    },
+  },
+})
+
+export const box = styled({
+  variants: {
+    padding: {
+      lg: {
+        padding: 20,
+      },
+      sm: {
+        padding: 10,
+      },
+    },
+    radius: {
+      lg: {
+        borderRadius: 10,
+      },
+      sm: {
+        borderRadius: 5,
+      },
+    },
+  },
+})
+
+export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
+  return (
+    <View
+      style={[
+        variant(box.variants.padding, props.padding),
+        variant(box.variants.radius, props.radius),
+      ]}
+    >
+      {props.children}
+    </View>
+  )
+}
+
+export function App(props: VariantProps<typeof text>) {
   return (
     <ThemeProvider>
-      <Button
-        onPress={() => {}}
-        full
+      <Box
+        radius="lg"
+        padding="sm"
       >
-        <Text>Press me</Text>
-      </Button>
+        <Button
+          onPress={() => {}}
+          full
+        >
+          <Text style={[variant(text.variants.fontFamily, props.fontFamily)]}>
+            Press me
+          </Text>
+        </Button>
+      </Box>
     </ThemeProvider>
   )
 }

@@ -1,50 +1,65 @@
-import React, { ReactNode, createContext, useContext } from 'react'
-import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
+import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
-type Style = ViewStyle | TextStyle | ImageStyle
+type Style = TextStyle | ViewStyle | ImageStyle
 
-type Config = {
-  base?: Style
-  variants?: {
-    [k in string]: {
-      [k in string]: Style
+function styled<
+  Config extends {
+    [K in keyof Config]: {
+      [U in keyof Config[K]]: Style
     }
+  },
+>(config: Config) {
+  function variant<K extends keyof Config, U extends keyof Config[K]>(
+    pairs: K,
+    pair: (U extends 'true' | 'false' ? boolean : U) | undefined,
+  ) {
+    if (pair === undefined) {
+      return
+    }
+    return config[pairs][pair as U]
   }
+  return { ...config, variant }
 }
 
-export function styled<T extends Config>(config: T) {
-  return config
+type VariantProps<T> = {
+  [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
 }
 
-export function variant<T, K extends keyof T>(
-  variants: T, key: K | boolean | undefined
-) {
-  if (key === undefined) {
-    return
-  }
-  return variants[key as K]
-}
+const style = styled({
+  flex: {
+    1: {
+      flex: 1,
+    },
+    2: {
+      flex: 2,
+    },
+    3: {
+      flex: 3,
+    },
+  },
+  alignItems: {
+    center: {
+      alignItems: 'center',
+    },
+  },
+  justifyContent: {
+    center: {
+      justifyContent: 'center',
+    },
+    flexEnd: {
+      justifyContent: 'flex-end',
+    },
+  },
+  flexDirection: {
+    row: {
+      flexDirection: 'row',
+    },
+    column: {
+      flexDirection: 'column',
+    },
+  },
+})
 
-export function createTheme<T>(theme: T) {
-  const Context = createContext(theme)
-
-  function useTheme() {
-    return useContext(Context)
-  }
-
-  function ThemeProvider(props: { children: ReactNode }) {
-    return <Context.Provider value={theme}>{props.children}</Context.Provider>
-  }
-
-  return {
-    theme,
-    useTheme,
-    ThemeProvider,
-  }
-}
-
-export type VariantProps<T extends Config> = {
-  [K in keyof T['variants']]?: keyof T['variants'][K] extends 'true' | 'false'
-    ? boolean
-    : keyof T['variants'][K]
-}
+export { styled }
+export { VariantProps }
+export { style }

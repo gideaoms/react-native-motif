@@ -3,13 +3,13 @@ import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 type Style = TextStyle | ViewStyle | ImageStyle
 
 function styled<
-  Config extends {
+  const Config extends {
     [K in keyof Config]: {
       [U in keyof Config[K]]: Style
     }
   },
 >(config: Config) {
-  function variant<K extends keyof Config, U extends keyof Config[K]>(
+  function variant<const K extends keyof Config, U extends keyof Config[K]>(
     pairs: K,
     pair: (U extends 'true' | 'false' ? boolean : U) | undefined,
   ) {
@@ -21,9 +21,12 @@ function styled<
   return { ...config, variant }
 }
 
-type VariantProps<T> = {
-  [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
-}
+type VariantProps<T> = Omit<
+  {
+    [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
+  },
+  'variant'
+>
 
 const style = styled({
   flex: {
@@ -56,6 +59,11 @@ const style = styled({
     },
     column: {
       flexDirection: 'column',
+    },
+  },
+  textAlign: {
+    center: {
+      textAlign: 'center',
     },
   },
 })

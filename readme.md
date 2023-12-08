@@ -32,16 +32,16 @@ const title = styled({
   },
 })
 
-export type TitleProps = {
+export type Props = {
   children: string | string[]
 } & VariantProps<typeof title>
 
-export function Title(props: TitleProps) {
+export function Title(props: Props) {
   return (
     <Text
       style={[
-        title.variant('color', props.color),
-        title.variant('fontSize', props.fontSize),
+        variant(title.color, props.color),
+        variant(title.fontSize, props.fontSize),
       ]}
     >
       {props.children}
@@ -61,8 +61,8 @@ export function App() {
   return (
     <View
       style={[
-        style.flex.$1,
-        style.alignItems.center,
+        style.flex1,
+        style.itemsCenter,
       ]}
     >
       <Title

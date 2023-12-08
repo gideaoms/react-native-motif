@@ -1,73 +1,60 @@
-import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
+import { StyleSheet, TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
 type Style = TextStyle | ViewStyle | ImageStyle
 
-function styled<
+export function styled<
   const Config extends {
     [K in keyof Config]: {
       [U in keyof Config[K]]: Style
     }
   },
 >(config: Config) {
-  function variant<const K extends keyof Config, U extends keyof Config[K]>(
-    pairs: K,
-    pair: (U extends 'true' | 'false' ? boolean : U) | undefined,
-  ) {
-    if (pair === undefined) {
-      return
-    }
-    return config[pairs][pair as U]
-  }
-  return { ...config, variant }
+  return config
 }
 
-type VariantProps<T> = Omit<
+export function variant<T, K extends keyof T>(
+  variants: T,
+  variant: (K extends 'true' | 'false' ? boolean : K) | undefined,
+) {
+  if (variant === undefined) {
+    return
+  }
+  return variants[variant as K]
+}
+
+export type VariantProps<T> = Omit<
   {
     [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
   },
   'variant'
 >
 
-const style = styled({
-  flex: {
-    $1: {
-      flex: 1,
-    },
-    $2: {
-      flex: 2,
-    },
-    $3: {
-      flex: 3,
-    },
+export const style = StyleSheet.create({
+  flex1: {
+    flex: 1,
   },
-  alignItems: {
-    center: {
-      alignItems: 'center',
-    },
+  flex2: {
+    flex: 2,
   },
-  justifyContent: {
-    center: {
-      justifyContent: 'center',
-    },
-    flexEnd: {
-      justifyContent: 'flex-end',
-    },
+  flex3: {
+    flex: 3,
   },
-  flexDirection: {
-    row: {
-      flexDirection: 'row',
-    },
-    column: {
-      flexDirection: 'column',
-    },
+  itemsCenter: {
+    alignItems: 'center',
   },
-  textAlign: {
-    center: {
-      textAlign: 'center',
-    },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
+  justifyEnd: {
+    justifyContent: 'flex-end',
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  flexColumn: {
+    flexDirection: 'column',
+  },
+  textCenter: {
+    textAlign: 'center',
   },
 })
-
-export { styled }
-export { VariantProps }
-export { style }

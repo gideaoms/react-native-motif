@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { View } from 'react-native'
-import { style, styled, VariantProps } from './mod'
+import { style, styled, variant, VariantProps } from './mod'
 
 const box = styled({
   padding: {
@@ -34,21 +34,18 @@ function Box(props: Props) {
   return (
     <View
       style={[
-        box.variant('bg', props.bg),
-        box.variant('full', props.full),
-        style.alignItems.center,
-        style.justifyContent.flexEnd,
-        style.flexDirection.row,
-        style.flex.$1,
+        style.itemsCenter,
+        style.justifyCenter,
+        style.flexRow,
+        style.flex1,
+        variant(box.bg, props.bg),
+        variant(box.full, props.full),
       ]}
     >
       {props.children}
     </View>
   )
 }
-
-export { Box }
-export { Props as BoxProps }
 
 function App() {
   return (
@@ -60,5 +57,3 @@ function App() {
     </Box>
   )
 }
-
-export { App }

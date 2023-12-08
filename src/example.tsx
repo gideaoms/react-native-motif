@@ -34,12 +34,12 @@ function Box(props: Props) {
   return (
     <View
       style={[
+        box.variant('bg', props.bg),
+        box.variant('full', props.full),
         style.alignItems.center,
         style.justifyContent.flexEnd,
         style.flexDirection.row,
-        box.padding[props.padding!],
-        box.full[props.full!],
-        box.bg[props.bg!],
+        style.flex[1],
       ]}
     >
       {props.children}
@@ -54,7 +54,7 @@ function App() {
   return (
     <Box
       padding="md"
-      full="true"
+      full
     >
       Hello world
     </Box>

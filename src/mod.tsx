@@ -30,13 +30,13 @@ type VariantProps<T> = Omit<
 
 const style = styled({
   flex: {
-    one: {
+    $1: {
       flex: 1,
     },
-    two: {
+    $2: {
       flex: 2,
     },
-    three: {
+    $3: {
       flex: 3,
     },
   },

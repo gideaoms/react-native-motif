@@ -61,7 +61,7 @@ export function App() {
   return (
     <View
       style={[
-        style.flex.one,
+        style.flex.$1,
         style.alignItems.center,
       ]}
     >

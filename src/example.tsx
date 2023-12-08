@@ -39,7 +39,7 @@ function Box(props: Props) {
         style.alignItems.center,
         style.justifyContent.flexEnd,
         style.flexDirection.row,
-        style.flex.one,
+        style.flex.$1,
       ]}
     >
       {props.children}

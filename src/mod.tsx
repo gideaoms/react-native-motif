@@ -27,13 +27,13 @@ type VariantProps<T> = {
 
 const style = styled({
   flex: {
-    1: {
+    one: {
       flex: 1,
     },
-    2: {
+    two: {
       flex: 2,
     },
-    3: {
+    three: {
       flex: 3,
     },
   },

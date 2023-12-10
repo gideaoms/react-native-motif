@@ -1,14 +1,18 @@
-import { StyleSheet, TextStyle, ViewStyle, ImageStyle } from 'react-native'
+import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
 type Style = TextStyle | ViewStyle | ImageStyle
 
-export function styled<
-  const Config extends {
-    [K in keyof Config]: {
-      [U in keyof Config[K]]: Style
-    }
-  },
->(config: Config) {
+type Base = {
+  base?: Style
+}
+
+type Variants = {
+  [k in string]: {
+    [k in string]: Style
+  }
+}
+
+export function styled<const T extends Base | Variants>(config: T) {
   return config
 }
 
@@ -26,35 +30,5 @@ export type VariantProps<T> = Omit<
   {
     [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
   },
-  'variant'
+  'variant' | 'base'
 >
-
-export const style = StyleSheet.create({
-  flex1: {
-    flex: 1,
-  },
-  flex2: {
-    flex: 2,
-  },
-  flex3: {
-    flex: 3,
-  },
-  itemsCenter: {
-    alignItems: 'center',
-  },
-  justifyCenter: {
-    justifyContent: 'center',
-  },
-  justifyEnd: {
-    justifyContent: 'flex-end',
-  },
-  flexRow: {
-    flexDirection: 'row',
-  },
-  flexColumn: {
-    flexDirection: 'column',
-  },
-  textCenter: {
-    textAlign: 'center',
-  },
-})

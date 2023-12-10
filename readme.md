@@ -14,6 +14,9 @@ import { VariantProps, styled } from 'react-native-motif'
 import { theme } from '../motif'
 
 const title = styled({
+  base: {
+    textAlign: 'center',
+  },
   color: {
     red: {
       color: 'red',
@@ -60,10 +63,11 @@ import { Title } from './components/title'
 export function App() {
   return (
     <View
-      style={[
-        style.flex1,
-        style.itemsCenter,
-      ]}
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
     >
       <Title
         color="primary"

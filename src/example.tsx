@@ -6,25 +6,27 @@ const box = styled({
   base: {
     alignItems: 'center',
   },
-  padding: {
-    md: {
-      padding: 5,
+  variants: {
+    padding: {
+      md: {
+        padding: 5,
+      },
+      lg: {
+        padding: 10,
+      },
     },
-    lg: {
-      padding: 10,
+    full: {
+      true: {
+        width: '100%',
+      },
     },
-  },
-  full: {
-    true: {
-      width: '100%',
-    },
-  },
-  bg: {
-    red: {
-      alignItems: 'center',
-    },
-    yellow: {
-      backgroundColor: 'yellow',
+    bg: {
+      red: {
+        alignItems: 'center',
+      },
+      yellow: {
+        backgroundColor: 'yellow',
+      },
     },
   },
 })

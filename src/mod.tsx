@@ -10,8 +10,8 @@ export function styled<
   const T extends {
     base?: S
     variants?: {
-      [K in keyof T['variants']]: {
-        [Y in keyof T['variants'][K]]: S
+      [k in string]: {
+        [k in string]: S
       }
     }
   },

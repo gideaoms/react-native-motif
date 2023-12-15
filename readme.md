@@ -11,26 +11,27 @@ npm install react-native-motif
 
 import { Text } from 'react-native'
 import { VariantProps, styled } from 'react-native-motif'
-import { theme } from '../motif'
 
 const title = styled({
   base: {
     textAlign: 'center',
   },
-  color: {
-    red: {
-      color: 'red',
+  variants: {
+    color: {
+      red: {
+        color: 'red',
+      },
+      yellow: {
+        color: 'yellow',
+      },
     },
-    yellow: {
-      color: 'yellow',
-    },
-  },
-  fontSize: {
-    sm: {
-      fontSize: 15,
-    },
-    md: {
-      fontSize: 18,
+    fontSize: {
+      sm: {
+        fontSize: 15,
+      },
+      md: {
+        fontSize: 18,
+      },
     },
   },
 })

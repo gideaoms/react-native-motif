@@ -4,7 +4,7 @@ import { styled, variant, VariantProps } from './mod'
 
 const box = styled({
   base: {
-    alignItems: 'baseline',
+    alignItems: 'center',
   },
   padding: {
     md: {

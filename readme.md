@@ -43,6 +43,7 @@ export function Title(props: Props) {
   return (
     <Text
       style={[
+        title.base,
         variant(title.color, props.color),
         variant(title.fontSize, props.fontSize),
       ]}

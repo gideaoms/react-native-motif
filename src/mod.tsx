@@ -1,34 +1,41 @@
 import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
-type Style = TextStyle | ViewStyle | ImageStyle
+type S = TextStyle | ViewStyle | ImageStyle
 
-type Base = {
-  base?: Style
-}
+type Prettify<T> = {
+  [K in keyof T]: T[K]
+} & {}
 
-type Variants = {
-  [k in string]: {
-    [k in string]: Style
+export function styled<
+  const T extends {
+    base?: S
+    variants?: {
+      [K in keyof T['variants']]: {
+        [Y in keyof T['variants'][K]]: S
+      }
+    }
+  },
+>(config: T) {
+  type R = Prettify<Omit<T, 'variants'> & T['variants']>
+  if (config.base) {
+    return { base: config.base, ...config.variants } as R
   }
+  return config.variants as R
 }
 
-export function styled<const T extends Base | Variants>(config: T) {
-  return config
-}
-
-export function variant<T, K extends keyof T>(
+export function variant<const T, const K extends keyof T>(
   variants: T,
-  variant: (K extends 'true' | 'false' ? boolean : K) | undefined,
+  key: (K extends 'true' | 'false' ? boolean : K) | undefined,
 ) {
-  if (variant === undefined) {
+  if (key === undefined) {
     return
   }
-  return variants[variant as K]
+  return variants[key as K]
 }
 
 export type VariantProps<T> = Omit<
   {
     [K in keyof T]?: keyof T[K] extends 'true' | 'false' ? boolean : keyof T[K]
   },
-  'variant' | 'base'
+  'base'
 >

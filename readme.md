@@ -13,26 +13,13 @@ import { Text } from 'react-native'
 import { VariantProps, styled } from 'react-native-motif'
 
 const title = styled({
-  base: {
-    textAlign: 'center',
+  color: {
+    primary: 'red',
+    secondary: 'yellow',
   },
-  variants: {
-    color: {
-      red: {
-        color: 'red',
-      },
-      yellow: {
-        color: 'yellow',
-      },
-    },
-    fontSize: {
-      sm: {
-        fontSize: 15,
-      },
-      md: {
-        fontSize: 18,
-      },
-    },
+  fontSize: {
+    sm: 15,
+    md: 18,
   },
 })
 
@@ -43,11 +30,10 @@ export type Props = {
 export function Title(props: Props) {
   return (
     <Text
-      style={[
-        title.base,
-        variant(title.color, props.color),
-        variant(title.fontSize, props.fontSize),
-      ]}
+      style={{
+        color: variant(title.color, props.color),
+        fontSize: variant(title.fontSize, props.fontSize),
+      }}
     >
       {props.children}
     </Text>

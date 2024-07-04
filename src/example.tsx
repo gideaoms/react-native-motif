@@ -1,48 +1,24 @@
-import { ReactNode } from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import { styled, variant, VariantProps } from './mod'
+import { ReactNode } from 'react'
 
 const box = styled({
-  base: {
-    alignItems: 'center',
+  backgroundColor: {
+    primary: 'red',
+    secondary: 'blue',
   },
-  variants: {
-    padding: {
-      md: {
-        padding: 5,
-      },
-      lg: {
-        padding: 10,
-      },
-    },
-    full: {
-      true: {
-        width: '100%',
-      },
-    },
-    bg: {
-      red: {
-        alignItems: 'center',
-      },
-      yellow: {
-        backgroundColor: 'yellow',
-      },
-    },
+  full: {
+    true: '100%',
   },
 })
 
-type Props = {
-  children: ReactNode
-} & VariantProps<typeof box>
-
-function Box(props: Props) {
+export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
   return (
     <View
-      style={[
-        box.base,
-        variant(box.bg, props.bg),
-        variant(box.full, props.full),
-      ]}
+      style={{
+        backgroundColor: variant(box.backgroundColor, props.backgroundColor),
+        width: variant(box.full, props.full),
+      }}
     >
       {props.children}
     </View>
@@ -52,10 +28,10 @@ function Box(props: Props) {
 export function App() {
   return (
     <Box
-      padding="md"
+      backgroundColor="primary"
       full
     >
-      Hello world
+      <Text>Hello</Text>
     </Box>
   )
 }

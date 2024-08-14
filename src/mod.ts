@@ -16,19 +16,21 @@ export function styled<
       [Y in string]: Style[K]
     }
   },
-  K extends keyof T
+  K extends keyof T,
+  U extends keyof T[K]
 >(config: T) {
-  const entries = Object.entries(config) as [[K, T[K]]]
-  const mapped = entries.map(([key, value]) => ({
-    [key]: {
-      ...value,
-      get: (key: keyof T[K] | undefined) => {
-        if (key === undefined) {
+  const mapped: any = {}
+  for (const key in config) {
+    mapped[key] = {
+      ...config[key],
+      get: (variant: U | undefined) => {
+        if (variant === undefined) {
           return undefined
         }
-        return value[key]
+        return config[key as unknown as K][variant]
       }
-    },
-  }))
-  return mapped.reduce((acc, curr) => ({ ...acc, ...curr }), {}) as { [U in K]: T[U] & GetFn<T, U> }
+    }
+  }
+  return mapped as { [U in K]: T[U] & GetFn<T, U> }
 }
+

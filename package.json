@@ -1,12 +1,12 @@
 {
   "name": "react-native-motif",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "React Native Library to build UI",
   "main": "dist/mod.js",
   "module": "dist/mod.js",
   "types": "dist/mod.d.ts",
   "scripts": {
-    "build": "rimraf dist && tsup src/mod.tsx --format esm,cjs --dts --external react,react-native",
+    "build": "rimraf dist && tsup src/mod.ts --format esm,cjs --dts --external react,react-native",
     "prepublishOnly": "npm run build"
   },
   "files": [

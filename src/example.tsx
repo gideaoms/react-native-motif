@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native'
-import { styled, variant, VariantProps } from './mod'
+import { styled, VariantProps } from './mod'
 import { ReactNode } from 'react'
 
 const box = styled({
@@ -16,8 +16,8 @@ export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
   return (
     <View
       style={{
-        backgroundColor: variant(box.backgroundColor, props.backgroundColor),
-        width: variant(box.full, props.full),
+        backgroundColor: box.backgroundColor.get(props.backgroundColor),
+        width: box.full.get(props.full),
       }}
     >
       {props.children}

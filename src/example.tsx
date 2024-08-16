@@ -7,9 +7,9 @@ const box = styled({
     primary: 'red',
     secondary: 'blue',
   },
-  full: {
-    true: '100%',
-  },
+  width: {
+    full: '100%'
+  }
 })
 
 export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
@@ -17,7 +17,7 @@ export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
     <View
       style={{
         backgroundColor: box.backgroundColor.get(props.backgroundColor),
-        width: box.full.get(props.full),
+        width: box.width.get(props.width),
       }}
     >
       {props.children}
@@ -29,7 +29,7 @@ export function App() {
   return (
     <Box
       backgroundColor="primary"
-      full
+      width='full'
     >
       <Text>Hello</Text>
     </Box>

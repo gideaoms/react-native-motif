@@ -2,25 +2,20 @@ import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
 type Style = TextStyle & ViewStyle & ImageStyle
 
-type Prettify<T> = {
-  [K in keyof T]: T[K];
-} & {};
-
-type GET<T, K extends keyof T, U extends keyof T[K]> = {
-  readonly get: (
-    variant: (U extends 'true' | 'false' ? boolean : U) | undefined
+type Getter<T, K extends keyof T> = {
+  readonly get: <U extends keyof T[K]>(
+    variant: U | undefined
   ) => T[K][U] | undefined
 }
 
 export type VariantProps<T> = {
-  [K in keyof T]?:
-  keyof T[K] extends 'true' | 'false' ? boolean : Exclude<keyof T[K], 'get'>
+  [K in keyof T]?: keyof Omit<T[K], 'get'>
 }
 
 export function styled<
-  const T extends { [V in keyof Style]: { [Y in string]: Style[V] } },
-  K extends keyof T,
-  U extends keyof T[K]
+  const T extends { [K in keyof Style]: { [_ in string]: Style[K] } },
+  const K extends keyof T,
+  const U extends keyof T[K],
 >(config: T) {
   const keys = Object.keys(config) as K[]
   return keys.reduce((acc, key) => ({
@@ -34,5 +29,5 @@ export function styled<
         return config[key][variant]
       },
     },
-  }), {} as Prettify<Record<K, Prettify<T[K] & GET<T, K, U>>>>)
+  }), {} as { [J in keyof T]: T[J] & Getter<T, J> })
 }

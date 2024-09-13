@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native'
-import { styled, VariantProps } from './mod'
-import { ReactNode } from 'react'
+import { styled, type VariantProps } from './mod'
+import type { ReactNode } from 'react'
 
 const box = styled({
   backgroundColor: {
@@ -12,7 +12,11 @@ const box = styled({
   }
 })
 
-export function Box(props: { children: ReactNode } & VariantProps<typeof box>) {
+type BoxProps = {
+  children: ReactNode
+} & VariantProps<typeof box>
+
+export function Box(props: BoxProps) {
   return (
     <View
       style={{

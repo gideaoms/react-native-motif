@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { styled } from './mod'
 
-describe('styled', function () {
-  it('successfully should create a style', function () {
+describe('styled', () => {
+  it('successfully should create a style', () => {
     const button = styled({
       color: {
         primary: 'red',

@@ -1,4 +1,4 @@
-import { TextStyle, ViewStyle, ImageStyle } from 'react-native'
+import type { TextStyle, ViewStyle, ImageStyle } from 'react-native'
 
 type Style = TextStyle & ViewStyle & ImageStyle
 
@@ -18,16 +18,17 @@ export function styled<
   const U extends keyof T[K],
 >(config: T) {
   const keys = Object.keys(config) as K[]
+  const initial = {} as { [P in keyof T]: T[P] & Getter<T, P> }
   return keys.reduce((acc, key) => ({
     ...acc,
     [key]: {
       ...config[key],
-      get: function (variant: U | undefined) {
+      get: (variant: U | undefined) => {
         if (variant === undefined) {
           return undefined
         }
         return config[key][variant]
       },
     },
-  }), {} as { [J in keyof T]: T[J] & Getter<T, J> })
+  }), initial)
 }

@@ -31,8 +31,8 @@ export function Title(props: Props) {
   return (
     <Text
       style={{
-        color: title.color.get(props.color),
-        fontSize: title.fontSize.get(props.fontSize),
+        color: title.color(props.color),
+        fontSize: title.fontSize(props.fontSize),
       }}
     >
       {props.children}
